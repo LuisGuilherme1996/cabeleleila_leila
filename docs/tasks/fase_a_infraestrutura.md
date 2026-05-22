@@ -7,7 +7,7 @@
 ## Checklist de Tarefas
 
 - [x] **A-1:** Inicializar repositório Git + `.gitignore` + `README.md`
-- [ ] **A-2:** Criar estrutura Turbo Repo
+- [x] **A-2:** Criar estrutura Turbo Repo
 - [ ] **A-3:** Scaffold do app NestJS em `apps/api/`
 - [ ] **A-4:** Scaffold do app Angular 21 em `apps/web/`
 - [ ] **A-5:** Instalar e configurar  no Angular + criar `packages/ui/`
