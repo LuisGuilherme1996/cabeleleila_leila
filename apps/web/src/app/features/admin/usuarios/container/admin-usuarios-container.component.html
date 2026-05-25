@@ -1,0 +1,31 @@
+<section class="py-[var(--space-section)] px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="display-md text-[var(--color-on-dark)] mb-1">Usuários</h1>
+        <p class="body-md text-[var(--color-body-dark)]">Lista de clientes e administradores.</p>
+      </div>
+    </div>
+
+    <div class="mb-5">
+      <input
+        type="search"
+        [(ngModel)]="busca"
+        (ngModelChange)="onBuscaChange($event)"
+        placeholder="Buscar por nome ou email..."
+        class="w-full max-w-md px-4 py-2.5 bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+               rounded-lg text-[var(--color-on-dark)] text-sm outline-none
+               focus:border-[var(--color-primary)] transition-colors placeholder:text-[var(--color-mute-dark)]"
+      />
+    </div>
+
+    @if (error$ | async; as err) {
+      <p class="body-md text-red-500 mb-4">{{ err }}</p>
+    }
+
+    <app-usuarios-table
+      [usuarios]="usuarios$ | async"
+      [loading]="(loading$ | async) ?? false"
+    />
+  </div>
+</section>

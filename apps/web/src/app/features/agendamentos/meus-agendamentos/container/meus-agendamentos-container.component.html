@@ -1,0 +1,138 @@
+<section class="py-[var(--space-section)] px-6">
+  <div class="max-w-3xl mx-auto">
+    <!-- Header -->
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="display-md text-[var(--color-on-dark)]">Meus Agendamentos</h1>
+        <p class="body-md text-[var(--color-body-dark)] mt-1">Histórico dos seus atendimentos.</p>
+      </div>
+      <a
+        routerLink="/agendar"
+        class="px-5 py-2 rounded-[var(--radius-full)]
+               bg-[var(--color-primary)] text-[var(--color-on-dark)] btn-label-sm
+               hover:bg-[var(--color-primary-pressed)] transition-colors"
+      >
+        Novo agendamento
+      </a>
+    </div>
+
+    <!-- Tabs -->
+    <div class="flex border-b border-[var(--color-hairline-dark)] mb-8">
+      <button
+        type="button"
+        (click)="setAba('proximos')"
+        class="px-5 py-3 caption-md transition-colors border-b-2 -mb-px"
+        [class.text-[var(--color-primary)]]="(abaAtiva$ | async) === 'proximos'"
+        [class.border-[var(--color-primary)]]="(abaAtiva$ | async) === 'proximos'"
+        [class.text-[var(--color-mute-dark)]]="(abaAtiva$ | async) !== 'proximos'"
+        [class.border-transparent]="(abaAtiva$ | async) !== 'proximos'"
+      >
+        Próximos
+        @if (proximos$ | async; as p) {
+          @if (p.length > 0) {
+            <span class="ml-1 px-1.5 py-0.5 rounded-full bg-[var(--color-primary)] text-white text-xs">
+              {{ p.length }}
+            </span>
+          }
+        }
+      </button>
+      <button
+        type="button"
+        (click)="setAba('historico')"
+        class="px-5 py-3 caption-md transition-colors border-b-2 -mb-px"
+        [class.text-[var(--color-primary)]]="(abaAtiva$ | async) === 'historico'"
+        [class.border-[var(--color-primary)]]="(abaAtiva$ | async) === 'historico'"
+        [class.text-[var(--color-mute-dark)]]="(abaAtiva$ | async) !== 'historico'"
+        [class.border-transparent]="(abaAtiva$ | async) !== 'historico'"
+      >
+        Histórico Passado
+      </button>
+    </div>
+
+    @if (error$ | async; as err) {
+      <p class="caption-md text-red-400 bg-red-500/10 border border-red-500/20 rounded-[var(--radius-sm)] px-4 py-3 mb-4">
+        {{ err }}
+      </p>
+    }
+
+    @if (loading$ | async) {
+      <div class="flex flex-col gap-4">
+        @for (item of [1, 2, 3]; track item) {
+          <div
+            class="h-28 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-md)] animate-pulse"
+          ></div>
+        }
+      </div>
+    } @else {
+      @if (listaAtiva$ | async; as lista) {
+        @if (lista.length === 0) {
+          <div class="text-center py-16">
+            @if ((abaAtiva$ | async) === 'proximos') {
+              <p class="body-md text-[var(--color-mute-dark)] mb-4">
+                Você não tem agendamentos futuros.
+              </p>
+              <a routerLink="/agendar" class="text-[var(--color-primary)] hover:underline body-sm">
+                Faça seu primeiro agendamento
+              </a>
+            } @else {
+              <p class="body-md text-[var(--color-mute-dark)]">
+                Nenhum atendimento no histórico.
+              </p>
+            }
+          </div>
+        } @else {
+          <div class="flex flex-col gap-4">
+            @for (agendamento of lista; track agendamento.id) {
+              <app-agendamento-card
+                [agendamento]="agendamento"
+                (cancelarSolicitado)="onSolicitarCancelamento($event)"
+              />
+            }
+          </div>
+        }
+      }
+    }
+  </div>
+</section>
+
+<!-- Cancel Confirmation Modal -->
+@if (cancelandoId$ | async) {
+  <div
+    class="fixed inset-0 z-50 flex items-center justify-center p-4
+           bg-black/70 backdrop-blur-sm"
+    (click)="onFecharModal()"
+  >
+    <div
+      class="bg-[var(--color-surface-dark-card)] border border-[var(--color-hairline-dark)]
+             rounded-[var(--radius-md)] p-8 max-w-sm w-full flex flex-col gap-5"
+      (click)="$event.stopPropagation()"
+    >
+      <div>
+        <h3 class="heading-md text-[var(--color-on-dark)] mb-2">Cancelar Agendamento?</h3>
+        <p class="body-sm text-[var(--color-body-dark)]">
+          Esta ação não pode ser desfeita. Tem certeza que deseja cancelar este agendamento?
+        </p>
+      </div>
+      <div class="flex gap-3">
+        <button
+          type="button"
+          (click)="onConfirmarCancelamento()"
+          class="flex-1 py-3 rounded-[var(--radius-full)]
+                 bg-red-600 text-white btn-label-sm
+                 hover:bg-red-700 transition-colors"
+        >
+          Sim, cancelar
+        </button>
+        <button
+          type="button"
+          (click)="onFecharModal()"
+          class="flex-1 py-3 rounded-[var(--radius-full)]
+                 border border-[var(--color-hairline-dark)] text-[var(--color-body-dark)] btn-label-sm
+                 hover:border-[var(--color-primary)] hover:text-[var(--color-on-dark)] transition-colors"
+        >
+          Manter
+        </button>
+      </div>
+    </div>
+  </div>
+}

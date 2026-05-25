@@ -14,27 +14,29 @@ description: >
 > Uma classe/função deve ter **um único motivo para mudar**.
 
 ### ❌ Violação
+
 ```typescript
 class UserService {
   async createUser(data: CreateUserDto) {
     // Valida dados
     if (!data.email.includes('@')) throw new Error('Invalid email');
-    
+
     // Salva no banco
     const user = await db.query('INSERT INTO users...', [data]);
-    
+
     // Envia email
     await nodemailer.sendMail({ to: data.email, subject: 'Bem-vindo!' });
-    
+
     // Loga
     console.log(`User created: ${user.id}`);
-    
+
     return user;
   }
 }
 ```
 
 ### ✅ Correto
+
 ```typescript
 // Cada classe tem UMA responsabilidade
 class UserValidator {
@@ -80,34 +82,44 @@ class CreateUserUseCase {
 > Aberto para extensão, **fechado para modificação**.
 
 ### ❌ Violação
+
 ```typescript
 class PaymentProcessor {
   process(type: 'credit' | 'pix' | 'boleto', amount: number) {
-    if (type === 'credit') { /* ... */ }
-    else if (type === 'pix') { /* ... */ }
-    else if (type === 'boleto') { /* ... */ }
+    if (type === 'credit') {
+      /* ... */
+    } else if (type === 'pix') {
+      /* ... */
+    } else if (type === 'boleto') {
+      /* ... */
+    }
     // Cada novo método de pagamento = modificar esta classe
   }
 }
 ```
 
 ### ✅ Correto
+
 ```typescript
 interface PaymentGateway {
   process(amount: number): Promise<PaymentResult>;
 }
 
 class CreditCardGateway implements PaymentGateway {
-  async process(amount: number): Promise<PaymentResult> { /* ... */ }
+  async process(amount: number): Promise<PaymentResult> {
+    /* ... */
+  }
 }
 
 class PixGateway implements PaymentGateway {
-  async process(amount: number): Promise<PaymentResult> { /* ... */ }
+  async process(amount: number): Promise<PaymentResult> {
+    /* ... */
+  }
 }
 
 class PaymentProcessor {
   constructor(private readonly gateway: PaymentGateway) {}
-  
+
   async process(amount: number): Promise<PaymentResult> {
     return this.gateway.process(amount); // Nunca muda
   }
@@ -115,7 +127,9 @@ class PaymentProcessor {
 
 // Adicionar novo método = nova classe, zero modificação
 class BoletoGateway implements PaymentGateway {
-  async process(amount: number): Promise<PaymentResult> { /* ... */ }
+  async process(amount: number): Promise<PaymentResult> {
+    /* ... */
+  }
 }
 ```
 
@@ -126,6 +140,7 @@ class BoletoGateway implements PaymentGateway {
 > Subclasses devem ser **substituíveis** por suas classes base sem quebrar o comportamento.
 
 ### ✅ Correto
+
 ```typescript
 abstract class Storage {
   abstract save(key: string, value: string): Promise<void>;
@@ -154,8 +169,12 @@ class InMemoryStorage extends Storage {
 // Cache funciona com qualquer implementação
 class CacheService {
   constructor(private readonly storage: Storage) {}
-  async set(key: string, value: string) { return this.storage.save(key, value); }
-  async get(key: string) { return this.storage.get(key); }
+  async set(key: string, value: string) {
+    return this.storage.save(key, value);
+  }
+  async get(key: string) {
+    return this.storage.get(key);
+  }
 }
 ```
 
@@ -166,6 +185,7 @@ class CacheService {
 > Clientes **não devem depender** de interfaces que não utilizam.
 
 ### ❌ Violação
+
 ```typescript
 interface UserRepository {
   findById(id: string): Promise<User>;
@@ -178,6 +198,7 @@ interface UserRepository {
 ```
 
 ### ✅ Correto
+
 ```typescript
 interface UserReader {
   findById(id: string): Promise<User>;
@@ -209,6 +230,7 @@ class DeleteUserUseCase {
 > Módulos de alto nível **não devem depender** de módulos de baixo nível. Ambos devem depender de **abstrações**.
 
 ### ❌ Violação
+
 ```typescript
 class OrderService {
   private db = new PostgresDatabase(); // ❌ acoplado diretamente
@@ -217,6 +239,7 @@ class OrderService {
 ```
 
 ### ✅ Correto
+
 ```typescript
 // Abstrações (domínio)
 interface OrderRepository {
@@ -229,26 +252,27 @@ interface Mailer {
 
 // Implementações concretas (infraestrutura)
 class PostgresOrderRepository implements OrderRepository {
-  async save(order: Order): Promise<Order> { /* ... */ }
+  async save(order: Order): Promise<Order> {
+    /* ... */
+  }
 }
 
 class SendGridMailer implements Mailer {
-  async send(options: MailOptions): Promise<void> { /* ... */ }
+  async send(options: MailOptions): Promise<void> {
+    /* ... */
+  }
 }
 
 // Alto nível depende de abstrações
 class CreateOrderUseCase {
   constructor(
     private readonly repository: OrderRepository, // abstração
-    private readonly mailer: Mailer,              // abstração
+    private readonly mailer: Mailer, // abstração
   ) {}
 }
 
 // Container de DI monta tudo
-const useCase = new CreateOrderUseCase(
-  new PostgresOrderRepository(db),
-  new SendGridMailer(apiKey),
-);
+const useCase = new CreateOrderUseCase(new PostgresOrderRepository(db), new SendGridMailer(apiKey));
 ```
 
 ---
@@ -256,6 +280,7 @@ const useCase = new CreateOrderUseCase(
 ## Detecção de Violações SOLID
 
 Ao revisar código, sinalize:
+
 - `[SRP]` — função/classe com múltiplas responsabilidades
 - `[OCP]` — `if/else` ou `switch` baseado em tipo
 - `[LSP]` — override que lança erros não esperados pelo contrato

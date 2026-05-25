@@ -1,0 +1,24 @@
+<div
+  class="min-h-screen bg-[var(--color-canvas-dark)] flex items-center justify-center px-6"
+  style="background-image: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,112,209,0.18) 0%, transparent 70%);"
+>
+  <div
+    class="w-full max-w-sm rounded-[var(--radius-md)] p-8
+           backdrop-blur-xl border border-[var(--color-hairline-dark)]"
+    style="background: rgba(18,19,20,0.72);"
+  >
+    <h1 class="heading-xl text-[var(--color-on-dark)] mb-1">Entrar</h1>
+    <p class="body-sm text-[var(--color-body-dark)] mb-8">Acesse sua conta para agendar.</p>
+
+    <app-login-form
+      [loading]="loading$ | async"
+      [error]="error$ | async"
+      (submitted)="onLogin($event)"
+    />
+
+    <p class="body-sm text-[var(--color-body-dark)] mt-6 text-center">
+      Não tem conta?
+      <a routerLink="/cadastro" class="text-[var(--color-primary)] hover:underline">Cadastre-se</a>
+    </p>
+  </div>
+</div>

@@ -1,0 +1,52 @@
+@if (stats(); as s) {
+  <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-5">
+    <!-- Pendentes -->
+    <div
+      class="bg-[var(--color-surface-dark-elevated)] border border-amber-500/30
+             rounded-[var(--radius-md)] p-5 backdrop-blur-sm"
+    >
+      <p class="caption-sm text-amber-400 uppercase tracking-wider mb-2">Pendentes</p>
+      <p class="display-md text-amber-400">{{ s.pendente }}</p>
+    </div>
+
+    <!-- Confirmados -->
+    <div
+      class="bg-[var(--color-surface-dark-elevated)] border border-emerald-500/30
+             rounded-[var(--radius-md)] p-5 backdrop-blur-sm"
+    >
+      <p class="caption-sm text-emerald-400 uppercase tracking-wider mb-2">Confirmados</p>
+      <p class="display-md text-emerald-400">{{ s.confirmado }}</p>
+    </div>
+
+    <!-- Concluídos -->
+    <div
+      class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+             rounded-[var(--radius-md)] p-5"
+    >
+      <p class="caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider mb-2">Concluídos</p>
+      <p class="display-md text-[var(--color-on-dark)]">{{ s.concluido }}</p>
+    </div>
+
+    <!-- Cancelados -->
+    <div
+      class="bg-[var(--color-surface-dark-elevated)] border border-red-500/30
+             rounded-[var(--radius-md)] p-5 backdrop-blur-sm"
+    >
+      <p class="caption-sm text-red-400 uppercase tracking-wider mb-2">Cancelados</p>
+      <p class="display-md text-red-400">{{ s.cancelado }}</p>
+    </div>
+
+    <!-- Faturamento estimado -->
+    <div
+      class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-primary)]/30
+             rounded-[var(--radius-md)] p-5 backdrop-blur-sm sm:col-span-2 xl:col-span-2"
+    >
+      <p class="caption-sm text-[var(--color-primary)] uppercase tracking-wider mb-2">
+        Faturamento Estimado (hoje)
+      </p>
+      <p class="display-md text-[var(--color-primary)]">
+        {{ s.faturamentoEstimado | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+      </p>
+    </div>
+  </div>
+}

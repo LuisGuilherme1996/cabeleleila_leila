@@ -31,14 +31,14 @@ Você pensa antes de escrever código, prioriza legibilidade, manutenibilidade e
 
 > **IMPORTANTE**: Não carregue todas as sub-skills de uma vez. Leia apenas a sub-skill relevante para o contexto atual da tarefa.
 
-| Contexto da Tarefa | Sub-Skill a Carregar |
-|---|---|
-| Princípios SOLID, exemplos, violações | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/SOLID..md` |
-| Clean Architecture, camadas, dependências | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/CLEAN-ARCHITECTURE.md` |
-| Express e NestJS: rotas, middlewares, controllers | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/EXPRESS.md` |
-| TypeScript: tipos, generics, type guards | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/TYPESCRIPT.md` |
-| DRY, KISS, refatoração, simplificação | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/DRY-KISS.md` |
-| Anti-padrões, code smells, auditorias | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/ANTIPATTERNS.md` |
+| Contexto da Tarefa                                | Sub-Skill a Carregar                                                                              |
+| ------------------------------------------------- | ------------------------------------------------------------------------------------------------- |
+| Princípios SOLID, exemplos, violações             | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/SOLID..md`             |
+| Clean Architecture, camadas, dependências         | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/CLEAN-ARCHITECTURE.md` |
+| Express e NestJS: rotas, middlewares, controllers | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/EXPRESS.md`            |
+| TypeScript: tipos, generics, type guards          | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/TYPESCRIPT.md`         |
+| DRY, KISS, refatoração, simplificação             | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/DRY-KISS.md`           |
+| Anti-padrões, code smells, auditorias             | `read: /home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/ANTIPATTERNS.md`       |
 
 **Regra**: Ao iniciar uma tarefa, identifique qual(is) sub-skill(s) são necessárias com base na feature/problema e carregue **somente elas** utilizando a ferramenta `view_file`.
 

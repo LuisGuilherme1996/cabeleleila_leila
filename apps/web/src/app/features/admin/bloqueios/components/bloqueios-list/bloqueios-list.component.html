@@ -1,0 +1,35 @@
+<div>
+  <h2 class="label-md text-[var(--color-on-dark)] mb-4">Bloqueios Cadastrados</h2>
+
+  @if (loading()) {
+    <div class="space-y-3">
+      @for (item of [1, 2, 3]; track item) {
+        <div class="h-20 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-md)] animate-pulse"></div>
+      }
+    </div>
+  } @else if (!bloqueios() || bloqueios()!.length === 0) {
+    <div class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+                rounded-[var(--radius-md)] px-5 py-10 text-center">
+      <p class="body-md text-[var(--color-mute-dark)]">Nenhum bloqueio cadastrado.</p>
+    </div>
+  } @else {
+    <div class="space-y-3">
+      @for (b of bloqueios(); track b.id) {
+        <div class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+                    rounded-[var(--radius-md)] px-4 py-3 flex items-start justify-between gap-4">
+          <div>
+            <p class="text-sm font-medium text-[var(--color-on-dark)]">{{ b.motivo }}</p>
+            <p class="caption-sm text-[var(--color-mute-dark)] mt-0.5">
+              {{ b.dataInicio | date: 'dd/MM/yyyy HH:mm' : undefined : 'pt-BR' }}
+              —
+              {{ b.dataFim | date: 'dd/MM/yyyy HH:mm' : undefined : 'pt-BR' }}
+            </p>
+          </div>
+          <ui-button variant="danger" (click)="remover.emit(b.id)">
+            Remover
+          </ui-button>
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,0 +1,60 @@
+<div class="flex flex-col gap-6">
+  <!-- Month navigation -->
+  <div class="flex items-center justify-between">
+    <button
+      type="button"
+      (click)="prevMonth()"
+      class="p-2 rounded-full hover:bg-[var(--color-surface-dark-elevated)] transition-colors text-[var(--color-on-dark)]"
+      aria-label="Mês anterior"
+    >
+      &#8249;
+    </button>
+    <span class="heading-md text-[var(--color-on-dark)] capitalize">{{ monthName() }}</span>
+    <button
+      type="button"
+      (click)="nextMonth()"
+      class="p-2 rounded-full hover:bg-[var(--color-surface-dark-elevated)] transition-colors text-[var(--color-on-dark)]"
+      aria-label="Próximo mês"
+    >
+      &#8250;
+    </button>
+  </div>
+
+  <!-- Calendar grid -->
+  <div class="grid grid-cols-7 gap-1">
+    @for (wd of weekDays; track wd) {
+      <div class="text-center caption-sm text-[var(--color-mute-dark)] py-2">{{ wd }}</div>
+    }
+
+    @for (day of calendarDays(); track day.date) {
+      @if (day.isCurrentMonth) {
+        <button
+          type="button"
+          [disabled]="day.isPast || day.isSunday"
+          (click)="selectDay(day)"
+          class="aspect-square flex items-center justify-center rounded-full text-sm transition-colors"
+          [class.text-[var(--color-on-dark)]]="!day.isPast && !day.isSunday"
+          [class.text-[var(--color-mute-dark)]]="day.isPast || day.isSunday"
+          [class.opacity-30]="day.isPast || day.isSunday"
+          [class.cursor-not-allowed]="day.isPast || day.isSunday"
+          [class.bg-[var(--color-primary)]]="day.isToday && !day.isPast"
+          [class.hover:bg-[var(--color-surface-dark-elevated)]]="!day.isPast && !day.isSunday && !day.isToday"
+        >
+          {{ day.day }}
+        </button>
+      } @else {
+        <div></div>
+      }
+    }
+  </div>
+
+  <p class="caption-sm text-[var(--color-mute-dark)]">Domingos indisponíveis. Selecione um dia para ver os horários.</p>
+
+  <button
+    type="button"
+    (click)="voltarClicado.emit()"
+    class="self-start caption-md text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)] transition-colors"
+  >
+    ← Voltar
+  </button>
+</div>

@@ -17,6 +17,7 @@ Abaixo estão listados os anti-padrões mais perigosos no ecossistema Node.js/Ty
 **O Problema**: Entidades que servem apenas como "sacos de dados" (apenas getters e setters ou propriedades públicas) sem nenhuma lógica ou validação de regras de negócio. Toda a lógica de negócio acaba vazando para Use Cases ou Services gordos.
 
 ### ❌ Anti-padrão (Anêmico)
+
 ```typescript
 export class Client {
   public id: string;
@@ -38,12 +39,13 @@ class UpdateClientUseCase {
 ```
 
 ### ✅ Solução (Rich Domain Model / Encapsulamento)
+
 ```typescript
 export class Client {
   private constructor(
     private readonly id: string,
     private email: string,
-    private status: 'ACTIVE' | 'BLOCKED'
+    private status: 'ACTIVE' | 'BLOCKED',
   ) {}
 
   // Lógica de negócio encapsulada dentro da Entidade
@@ -67,6 +69,7 @@ export class Client {
 **O Problema**: Expor diretamente os models do ORM (Prisma/TypeORM) nas rotas HTTP (Controllers e DTOs) ou nas regras de negócio de alto nível. Qualquer alteração na estrutura do banco quebra a API e os clientes.
 
 ### ❌ Anti-padrão
+
 ```typescript
 @Controller('users')
 export class UserController {
@@ -79,6 +82,7 @@ export class UserController {
 ```
 
 ### ✅ Solução (DTOs e Mappers)
+
 ```typescript
 @Controller('users')
 export class UserController {
@@ -86,10 +90,10 @@ export class UserController {
   async create(@Body() dto: CreateUserDto) {
     // 1. Converte DTO para Domínio
     const userDomain = UserMapper.toDomain(dto);
-    
+
     // 2. Executa Use Case
     const result = await this.createUserUseCase.execute(userDomain);
-    
+
     // 3. Converte Domínio para Resposta HTTP Higienizada (DTO de Saída)
     return UserMapper.toResponse(result);
   }
@@ -103,6 +107,7 @@ export class UserController {
 **O Problema**: Silenciar erros de forma descuidada com `catch (err) {}` ou lançar erros genéricos de texto puro, impedindo diagnósticos e respostas ricas na API.
 
 ### ❌ Anti-padrão
+
 ```typescript
 try {
   await paymentGateway.charge(amount);
@@ -113,6 +118,7 @@ try {
 ```
 
 ### ✅ Solução (Custom Errors e Hierarquias)
+
 ```typescript
 try {
   await paymentGateway.charge(amount);
@@ -120,7 +126,7 @@ try {
   // Transforma erros de terceiros em erros inteligíveis para o domínio do sistema
   throw new PaymentProcessingFailedException(
     'Não foi possível processar a cobrança do agendamento.',
-    error instanceof Error ? error.message : String(error)
+    error instanceof Error ? error.message : String(error),
   );
 }
 ```
@@ -132,6 +138,7 @@ try {
 **O Problema**: Fazer consultas repetitivas em loop para obter dados associados do banco, gerando centenas de queries sequenciais desnecessárias.
 
 ### ❌ Anti-padrão
+
 ```typescript
 const appointments = await prisma.appointment.findMany(); // 1 query
 
@@ -142,6 +149,7 @@ for (const app of appointments) {
 ```
 
 ### ✅ Solução (Eager Loading / Joins)
+
 ```typescript
 // Resolve tudo em 1 única query com JOIN robusto
 const appointments = await prisma.appointment.findMany({

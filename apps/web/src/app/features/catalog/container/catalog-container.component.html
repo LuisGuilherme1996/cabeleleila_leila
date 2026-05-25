@@ -1,0 +1,33 @@
+<section class="py-[var(--space-section)] px-6">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="display-lg text-[var(--color-on-dark)] mb-2">Nossos Serviços</h1>
+    <p class="body-md text-[var(--color-body-dark)] mb-10">Escolha o serviço ideal para você.</p>
+
+    @if (loading$ | async) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (i of [1, 2, 3]; track i) {
+          <div
+            class="h-48 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-md)] animate-pulse"
+          ></div>
+        }
+      </div>
+    }
+
+    @if (error$ | async; as err) {
+      <p class="body-md text-red-500">{{ err }}</p>
+    }
+
+    @if (servicos$ | async; as servicos) {
+      @if (servicos.length === 0 && !(loading$ | async)) {
+        <p class="body-md text-[var(--color-mute-dark)]">
+          Nenhum serviço disponível no momento.
+        </p>
+      }
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
+        @for (servico of servicos; track servico.id) {
+          <app-service-card [servico]="servico" (agendarClicado)="onAgendar($event)" />
+        }
+      </div>
+    }
+  </div>
+</section>

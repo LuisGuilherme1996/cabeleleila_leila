@@ -1,0 +1,46 @@
+<div
+  class="min-h-screen bg-[var(--color-canvas-dark)] flex items-center justify-center px-6"
+  style="background-image: radial-gradient(ellipse 80% 60% at 50% -10%, rgba(0,112,209,0.14) 0%, transparent 70%);"
+>
+  <div
+    class="w-full max-w-sm rounded-[var(--radius-md)] p-8
+           backdrop-blur-xl border border-[var(--color-hairline-dark)]"
+    style="background: rgba(18,19,20,0.72);"
+  >
+    @if (success$ | async) {
+      <!-- Banner de confirmação -->
+      <div
+        role="status"
+        class="flex flex-col items-center gap-4 py-6 text-center"
+      >
+        <div class="w-14 h-14 rounded-full bg-green-900/40 border border-green-500/50 flex items-center justify-center">
+          <svg xmlns="http://www.w3.org/2000/svg" class="w-7 h-7 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M5 13l4 4L19 7" />
+          </svg>
+        </div>
+        <h2 class="heading-xl text-[var(--color-on-dark)]">Conta criada!</h2>
+        <p class="body-sm text-[var(--color-body-dark)]">
+          Um e-mail de confirmação foi enviado para o seu endereço.<br />
+          Você será redirecionado para o login em <strong class="text-[var(--color-on-dark)]">5 segundos</strong>.
+        </p>
+        <a routerLink="/login" class="caption-md text-[var(--color-primary)] hover:underline">
+          Ir para o login agora
+        </a>
+      </div>
+    } @else {
+      <h1 class="heading-xl text-[var(--color-on-dark)] mb-1">Criar Conta</h1>
+      <p class="body-sm text-[var(--color-body-dark)] mb-8">Cadastre-se para agendar serviços.</p>
+
+      <app-register-form
+        [loading]="loading$ | async"
+        [error]="error$ | async"
+        (submitted)="onRegister($event)"
+      />
+
+      <p class="body-sm text-[var(--color-body-dark)] mt-6 text-center">
+        Já tem conta?
+        <a routerLink="/login" class="text-[var(--color-primary)] hover:underline">Entrar</a>
+      </p>
+    }
+  </div>
+</div>

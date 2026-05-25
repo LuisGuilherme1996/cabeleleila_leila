@@ -16,6 +16,9 @@
     "clean": "turbo run clean"
   },
   "devDependencies": {
+    "eslint": "^9.16.0",
+    "eslint-config": "*",
+    "prettier": "^3.4.2",
     "turbo": "^2.0.0"
   },
   "engines": {

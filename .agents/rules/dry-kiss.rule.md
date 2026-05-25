@@ -8,10 +8,12 @@ description: DRY & KISS Principles - Aplique esta regra sempre que a tarefa envo
 Você está executando uma tarefa focada na simplificação de código, legibilidade ou refatoração.
 
 ### Ação Obrigatória:
+
 Antes de fazer alterações, use a ferramenta `view_file` para carregar a skill DRY & KISS em:
 `/home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/DRY-KISS.md`
 
 ### Diretrizes Chave:
+
 1. Elimine constantes mágicas e centralize representações únicas de conhecimento (DRY).
 2. Escreva funções pequenas, focadas em fazer apenas uma coisa (Single Responsibility/KISS).
 3. Prefira early returns (guard clauses) para evitar aninhamento profundo de blocos if/else.

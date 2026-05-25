@@ -1,0 +1,52 @@
+<div
+  class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+         rounded-[var(--radius-md)] p-5 flex flex-col gap-3"
+>
+  <div class="flex items-start justify-between gap-4">
+    <div>
+      <h3 class="heading-sm text-[var(--color-on-dark)]">{{ agendamento().servicoNome }}</h3>
+      <div class="flex items-center gap-2 mt-1">
+        <p class="caption-md text-[var(--color-body-dark)]">
+          {{ agendamento().dataHoraFormatada }}
+        </p>
+        <span class="text-[var(--color-mute-dark)] text-sm">•</span>
+        <p class="caption-md text-[var(--color-primary)] font-semibold">
+          {{ agendamento().servicoPreco | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+        </p>
+      </div>
+    </div>
+    <span
+      class="caption-sm px-3 py-1 rounded-[var(--radius-full)] shrink-0"
+      [class.bg-yellow-500/20]="agendamento().status === 'PENDENTE'"
+      [class.text-yellow-400]="agendamento().status === 'PENDENTE'"
+      [class.bg-green-500/20]="agendamento().status === 'CONFIRMADO'"
+      [class.text-green-400]="agendamento().status === 'CONFIRMADO'"
+      [class.bg-red-500/20]="agendamento().status === 'CANCELADO'"
+      [class.text-red-400]="agendamento().status === 'CANCELADO'"
+      [class.bg-blue-500/20]="agendamento().status === 'CONCLUIDO'"
+      [class.text-blue-400]="agendamento().status === 'CONCLUIDO'"
+    >
+      {{ agendamento().statusLabel }}
+    </span>
+  </div>
+
+  @if (agendamento().observacao) {
+    <p class="body-sm text-[var(--color-mute-dark)]">{{ agendamento().observacao }}</p>
+  }
+
+  @if (agendamento().podeCancelar) {
+    <button
+      type="button"
+      (click)="onSolicitarCancelamento()"
+      class="self-start caption-md text-red-400 hover:text-red-300 transition-colors"
+    >
+      Cancelar agendamento
+    </button>
+  } @else if (agendamento().status === 'PENDENTE' || agendamento().status === 'CONFIRMADO') {
+    <!-- Cancelamento bloqueado pois faltam menos de 2h -->
+    <p class="caption-sm text-[var(--color-mute-dark)] bg-amber-500/10 border border-amber-500/20 rounded-[var(--radius-sm)] px-3 py-2 leading-snug">
+      ⚠️ Para cancelar com menos de 2 horas de antecedência, ligue para a dona do salão:
+      <a href="tel:+55" class="text-[var(--color-primary)] font-semibold hover:underline ml-1">(XX) XXXXX-XXXX</a>
+    </p>
+  }
+</div>

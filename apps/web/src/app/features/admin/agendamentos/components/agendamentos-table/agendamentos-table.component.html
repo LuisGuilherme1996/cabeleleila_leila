@@ -1,0 +1,86 @@
+@if (loading()) {
+  <div class="space-y-3">
+    @for (item of [1, 2, 3, 4, 5]; track item) {
+      <div class="h-14 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-md)] animate-pulse"></div>
+    }
+  </div>
+} @else {
+  <div
+    class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+           rounded-[var(--radius-md)] overflow-hidden"
+  >
+    @if (!agendamentos() || agendamentos()!.length === 0) {
+      <p class="body-md text-[var(--color-mute-dark)] px-5 py-10 text-center">
+        Nenhum agendamento encontrado para os filtros selecionados.
+      </p>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm" aria-label="Tabela de agendamentos">
+          <thead>
+            <tr class="border-b border-[var(--color-hairline-dark)]">
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Data/Hora</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Cliente</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Serviço</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Valor</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Status</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (a of agendamentos(); track a.id) {
+              <tr class="border-b border-[var(--color-hairline-dark)] last:border-0 hover:bg-[var(--color-surface-dark-card)] transition-colors">
+                <td class="px-4 py-3 text-[var(--color-on-dark)] font-medium whitespace-nowrap">
+                  {{ a.dataHoraFormatada }}
+                </td>
+                <td class="px-4 py-3">
+                  <p class="text-[var(--color-on-dark)] font-medium">{{ a.clienteNome }}</p>
+                  <p class="caption-sm text-[var(--color-mute-dark)]">{{ a.clienteEmail }}</p>
+                </td>
+                <td class="px-4 py-3 text-[var(--color-body-dark)]">{{ a.servicoNome }}</td>
+                <td class="px-4 py-3 text-[var(--color-body-dark)] whitespace-nowrap">
+                  {{ a.servicoPreco | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+                </td>
+                <td class="px-4 py-3">
+                  <span [class]="'inline-flex px-2 py-0.5 rounded-full caption-sm font-medium ' + statusClass(a.status)">
+                    {{ a.statusLabel }}
+                  </span>
+                </td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center gap-2">
+                    @if (a.status === 'PENDENTE') {
+                      <ui-button
+                        variant="primary"
+                        [disabled]="isLoadingAction(a.id)"
+                        (click)="confirmar.emit(a.id)"
+                      >
+                        Confirmar
+                      </ui-button>
+                    }
+                    @if (a.status === 'CONFIRMADO') {
+                      <ui-button
+                        variant="primary"
+                        [disabled]="isLoadingAction(a.id)"
+                        (click)="concluir.emit(a.id)"
+                      >
+                        Concluir
+                      </ui-button>
+                    }
+                    @if (a.status === 'PENDENTE' || a.status === 'CONFIRMADO') {
+                      <ui-button
+                        variant="danger"
+                        [disabled]="isLoadingAction(a.id)"
+                        (click)="cancelar.emit(a.id)"
+                      >
+                        Cancelar
+                      </ui-button>
+                    }
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+}

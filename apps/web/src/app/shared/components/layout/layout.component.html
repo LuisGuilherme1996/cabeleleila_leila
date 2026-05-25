@@ -1,0 +1,346 @@
+<!-- ============================================================
+     LayoutComponent — Three-canvas shell
+     Header: sticky glassmorphic (dark canvas mode)
+     Sidebar: desktop fixed-left / mobile drawer overlay
+     ============================================================ -->
+
+<!-- ── Mobile sidebar backdrop ──────────────────────────── -->
+@if (isLoggedIn() && sidebarOpen()) {
+  <div
+    class="fixed inset-0 z-30 bg-black/60 backdrop-blur-sm md:hidden"
+    (click)="closeSidebar()"
+    aria-hidden="true"
+  ></div>
+}
+
+<!-- ── Sidebar ───────────────────────────────────────────── -->
+@if (isLoggedIn()) {
+  <aside
+    [class]="
+      'fixed top-0 left-0 z-40 h-full w-64 flex flex-col ' +
+      'bg-[var(--color-surface-dark-elevated)] border-r border-[var(--color-hairline-dark)] ' +
+      'transition-transform duration-300 ' +
+      (sidebarOpen() ? 'translate-x-0' : '-translate-x-full') +
+      ' md:translate-x-0'
+    "
+    aria-label="Navegação principal"
+  >
+    <!-- Sidebar header / logo -->
+    <div class="flex items-center gap-3 px-6 h-20 border-b border-[var(--color-hairline-dark)] shrink-0">
+      <div
+        class="w-9 h-9 rounded-[var(--radius-md)] flex items-center justify-center
+               bg-[var(--color-primary)]"
+        aria-hidden="true"
+      >
+        <span class="font-bold text-[var(--color-on-dark)] text-base leading-none">L</span>
+      </div>
+      <span class="font-semibold text-[var(--color-on-dark)] text-sm leading-tight">
+        Cabeleleila<br />
+        <span class="text-[var(--color-body-dark)] font-normal">Leila</span>
+      </span>
+    </div>
+
+    <!-- Navigation links -->
+    <nav class="flex-1 overflow-y-auto py-6 px-4 space-y-1" aria-label="Menu lateral">
+      <!-- Public -->
+      <a
+        routerLink="/"
+        routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+        [routerLinkActiveOptions]="{ exact: true }"
+        (click)="closeSidebar()"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+               text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+               hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+      >
+        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 12l8.954-8.955a1.126 1.126 0 011.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25" />
+        </svg>
+        Início
+      </a>
+
+      <a
+        routerLink="/servicos"
+        routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+        (click)="closeSidebar()"
+        class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+               text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+               hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+      >
+        <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+          <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+        </svg>
+        Serviços
+      </a>
+
+      <!-- Authenticated client (apenas para CLIENTE, não admin) -->
+      @if (isLoggedIn() && !isAdmin()) {
+        <div class="pt-4 pb-1 px-3">
+          <p class="caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Minha Conta</p>
+        </div>
+
+        <a
+          routerLink="/agendar"
+          routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+                 text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+                 hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+        >
+          <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+          </svg>
+          Agendar
+        </a>
+
+        <a
+          routerLink="/meus-agendamentos"
+          routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+                 text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+                 hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+        >
+          <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M8.25 6.75h12M8.25 12h12m-12 5.25h12M3.75 6.75h.007v.008H3.75V6.75zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zM3.75 12h.007v.008H3.75V12zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0zm-.375 5.25h.007v.008H3.75v-.008zm.375 0a.375.375 0 11-.75 0 .375.375 0 01.75 0z" />
+          </svg>
+          Meus Agendamentos
+        </a>
+      }
+
+      <!-- Admin -->
+      @if (isAdmin()) {
+        <div class="pt-4 pb-1 px-3">
+          <p class="caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Administração</p>
+        </div>
+
+        <a
+          routerLink="/admin"
+          routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+          [routerLinkActiveOptions]="{ exact: true }"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+                 text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+                 hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+        >
+          <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 3v11.25A2.25 2.25 0 006 16.5h2.25M3.75 3h-1.5m1.5 0h16.5m0 0h1.5m-1.5 0v11.25A2.25 2.25 0 0118 16.5h-2.25m-7.5 0h7.5m-7.5 0l-1 3m8.5-3l1 3m0 0l.5 1.5m-.5-1.5h-9.5m0 0l-.5 1.5" />
+          </svg>
+          Dashboard
+        </a>
+
+        <a
+          routerLink="/admin/agendamentos"
+          routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+                 text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+                 hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+        >
+          <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6.75 3v2.25M17.25 3v2.25M3 18.75V7.5a2.25 2.25 0 012.25-2.25h13.5A2.25 2.25 0 0121 7.5v11.25m-18 0A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75m-18 0v-7.5A2.25 2.25 0 015.25 9h13.5A2.25 2.25 0 0121 11.25v7.5" />
+          </svg>
+          Agendamentos
+        </a>
+
+        <a
+          routerLink="/admin/servicos"
+          routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+                 text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+                 hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+        >
+          <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M9.568 3H5.25A2.25 2.25 0 003 5.25v4.318c0 .597.237 1.17.659 1.591l9.581 9.581c.699.699 1.78.872 2.607.33a18.095 18.095 0 005.223-5.223c.542-.827.369-1.908-.33-2.607L11.16 3.66A2.25 2.25 0 009.568 3z" />
+            <path stroke-linecap="round" stroke-linejoin="round" d="M6 6h.008v.008H6V6z" />
+          </svg>
+          Serviços
+        </a>
+
+        <a
+          routerLink="/admin/horarios"
+          routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+                 text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+                 hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+        >
+          <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+          </svg>
+          Horários
+        </a>
+
+        <a
+          routerLink="/admin/bloqueios"
+          routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+                 text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+                 hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+        >
+          <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M18.364 18.364A9 9 0 005.636 5.636m12.728 12.728A9 9 0 015.636 5.636m12.728 12.728L5.636 5.636" />
+          </svg>
+          Bloqueios
+        </a>
+
+        <a
+          routerLink="/admin/usuarios"
+          routerLinkActive="!text-[var(--color-on-dark)] bg-[var(--color-surface-dark-card)]"
+          (click)="closeSidebar()"
+          class="flex items-center gap-3 px-3 py-2.5 rounded-[var(--radius-md)]
+                 text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)]
+                 hover:bg-[var(--color-surface-dark-card)] transition-colors caption-md"
+        >
+          <svg class="w-5 h-5 shrink-0" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M15 19.128a9.38 9.38 0 002.625.372 9.337 9.337 0 004.121-.952 4.125 4.125 0 00-7.533-2.493M15 19.128v-.003c0-1.113-.285-2.16-.786-3.07M15 19.128v.106A12.318 12.318 0 018.624 21c-2.331 0-4.512-.645-6.374-1.766l-.001-.109a6.375 6.375 0 0111.964-3.07M12 6.375a3.375 3.375 0 11-6.75 0 3.375 3.375 0 016.75 0zm8.25 2.25a2.625 2.625 0 11-5.25 0 2.625 2.625 0 015.25 0z" />
+          </svg>
+          Usuários
+        </a>
+      }
+    </nav>
+
+    <!-- Sidebar footer — user / logout -->
+    <div class="shrink-0 border-t border-[var(--color-hairline-dark)] p-4">
+      @if (isLoggedIn()) {
+        <div class="flex items-center justify-between gap-3">
+          <div class="flex items-center gap-2 min-w-0">
+            <div
+              class="w-8 h-8 rounded-[var(--radius-full)] bg-[var(--color-primary)] flex items-center
+                     justify-center shrink-0"
+              aria-hidden="true"
+            >
+              <span class="text-[var(--color-on-dark)] caption-sm font-bold">
+                {{ userName().charAt(0).toUpperCase() }}
+              </span>
+            </div>
+            <span class="caption-md text-[var(--color-body-dark)] truncate">{{ userName() }}</span>
+          </div>
+          <button
+            type="button"
+            (click)="logout()"
+            class="p-1.5 rounded-[var(--radius-md)] text-[var(--color-mute-dark)]
+                   hover:text-[var(--color-on-dark)] hover:bg-[var(--color-surface-dark-card)]
+                   transition-colors"
+            aria-label="Sair da conta"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 9V5.25A2.25 2.25 0 0013.5 3h-6a2.25 2.25 0 00-2.25 2.25v13.5A2.25 2.25 0 007.5 21h6a2.25 2.25 0 002.25-2.25V15M12 9l-3 3m0 0l3 3m-3-3h12.75" />
+            </svg>
+          </button>
+        </div>
+      }
+    </div>
+  </aside>
+}
+
+<!-- ── Main wrapper (offset by sidebar on desktop if logged in) ──────── -->
+<div
+  [class]="
+    'min-h-screen flex flex-col bg-[var(--color-canvas-dark)] ' +
+    (isLoggedIn() ? 'md:pl-64' : '')
+  "
+>
+
+  <!-- ── Sticky header (glassmorphic) ───────────────────── -->
+  <header
+    class="sticky top-0 z-20 h-20 flex items-center
+           bg-[var(--color-canvas-dark)]/80 backdrop-blur-md
+           border-b border-[var(--color-hairline-dark)]"
+    role="banner"
+  >
+    <div class="w-full max-w-7xl mx-auto px-6 flex items-center justify-between">
+
+      <!-- Logo when not logged in / Hamburger when logged in -->
+      @if (isLoggedIn()) {
+        <!-- Hamburger (mobile only) -->
+        <button
+          type="button"
+          class="md:hidden p-2 rounded-[var(--radius-md)] text-[var(--color-body-dark)]
+                 hover:text-[var(--color-on-dark)] hover:bg-[var(--color-surface-dark-card)]
+                 transition-colors"
+          (click)="toggleSidebar()"
+          [attr.aria-expanded]="sidebarOpen()"
+          aria-controls="sidebar"
+          aria-label="Abrir menu de navegação"
+        >
+          @if (sidebarOpen()) {
+            <!-- X icon -->
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+          } @else {
+            <!-- Hamburger icon -->
+            <svg class="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+            </svg>
+          }
+        </button>
+
+        <!-- Desktop: breadcrumb / page title area (populated by children) -->
+        <div class="hidden md:block" aria-hidden="true"></div>
+      } @else {
+        <!-- Brand logo for public navigation -->
+        <a routerLink="/" class="flex items-center gap-3">
+          <div
+            class="w-9 h-9 rounded-[var(--radius-md)] flex items-center justify-center
+                   bg-[var(--color-primary)]"
+            aria-hidden="true"
+          >
+            <span class="font-bold text-[var(--color-on-dark)] text-base leading-none">L</span>
+          </div>
+          <span class="font-semibold text-[var(--color-on-dark)] text-sm leading-tight">
+            Cabeleleila<br />
+            <span class="text-[var(--color-body-dark)] font-normal">Leila</span>
+          </span>
+        </a>
+      }
+
+      <!-- Header right — CTA / user actions -->
+      <div class="flex items-center gap-4">
+        @if (!isLoggedIn()) {
+          <a
+            routerLink="/login"
+            class="inline-flex items-center px-5 py-2.5
+                   rounded-[var(--radius-full)] bg-[var(--color-primary)]
+                   text-[var(--color-on-dark)] btn-label-md
+                   hover:bg-[var(--color-primary-pressed)] transition-colors"
+          >
+            Entrar
+          </a>
+          <a
+            routerLink="/cadastro"
+            class="hidden sm:inline-flex items-center px-5 py-2.5
+                   rounded-[var(--radius-full)] border border-[var(--color-hairline-dark)]
+                   text-[var(--color-body-dark)] btn-label-md
+                   hover:text-[var(--color-on-dark)] hover:border-[var(--color-on-dark-mute)]
+                   transition-colors"
+          >
+            Criar Conta
+          </a>
+        } @else if (!isAdmin()) {
+          <a
+            routerLink="/agendar"
+            class="inline-flex items-center gap-2 px-5 py-2.5
+                   rounded-[var(--radius-full)] bg-[var(--color-primary)]
+                   text-[var(--color-on-dark)] btn-label-md
+                   hover:bg-[var(--color-primary-pressed)] transition-colors"
+          >
+            <svg class="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" d="M12 4.5v15m7.5-7.5h-15" />
+            </svg>
+            Novo Agendamento
+          </a>
+        }
+      </div>
+    </div>
+  </header>
+
+  <!-- ── Page content ───────────────────────────────────── -->
+  <main class="flex-1" id="main-content" tabindex="-1">
+    <router-outlet />
+  </main>
+
+</div>

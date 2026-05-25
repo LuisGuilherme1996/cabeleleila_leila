@@ -16,6 +16,7 @@ Esta sub-skill define as convenções inegociáveis para a camada de **Apresenta
 ## 1. Responsabilidade dos Controllers (KISS & SOLID)
 
 Um Controller deve fazer **exclusivamente**:
+
 1. Receber os dados da requisição HTTP (params, query, body, headers).
 2. Chamar o validador para garantir a integridade formal dos dados.
 3. Invocar o Caso de Uso correspondente passando os dados higienizados.
@@ -24,6 +25,7 @@ Um Controller deve fazer **exclusivamente**:
 > **REGRA DE OURO**: Controllers **NUNCA** acessam banco de dados diretamente e **NUNCA** implementam regras de negócio. Eles são apenas condutores de dados.
 
 ### Exemplo em Express (TypeScript)
+
 ```typescript
 // src/modules/appointments/presentation/controllers/create-appointment.controller.ts
 import { Request, Response, NextFunction } from 'express';
@@ -55,6 +57,7 @@ export class CreateAppointmentController {
 ```
 
 ### Exemplo correspondente em NestJS
+
 ```typescript
 // src/modules/appointments/presentation/controllers/create-appointment.controller.ts
 import { Controller, Post, Body, UseGuards, Req, HttpCode } from '@nestjs/common';
@@ -100,7 +103,7 @@ export const validateRequest = (schema: AnyZodObject) => {
         res.status(400).json({
           status: 'fail',
           message: 'Erro de validação de dados.',
-          errors: error.errors.map(err => ({
+          errors: error.errors.map((err) => ({
             field: err.path.join('.'),
             message: err.message,
           })),
@@ -128,7 +131,7 @@ export const errorHandler = (
   error: Error,
   req: Request,
   res: Response,
-  next: NextFunction
+  next: NextFunction,
 ): void => {
   // Erros de Domínio / Regra de Negócio
   if (error instanceof DomainError) {
@@ -145,9 +148,10 @@ export const errorHandler = (
 
   res.status(500).json({
     status: 'error',
-    message: process.env.NODE_ENV === 'production' 
-      ? 'Ocorreu um erro interno no servidor.' 
-      : error.message,
+    message:
+      process.env.NODE_ENV === 'production'
+        ? 'Ocorreu um erro interno no servidor.'
+        : error.message,
   });
 };
 ```

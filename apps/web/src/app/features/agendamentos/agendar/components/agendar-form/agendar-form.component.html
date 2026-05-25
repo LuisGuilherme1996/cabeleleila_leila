@@ -1,0 +1,62 @@
+<form [formGroup]="form" (ngSubmit)="onSubmit()" class="flex flex-col gap-5">
+  <div class="flex flex-col gap-1">
+    <label for="servico" class="caption-md text-[var(--color-body-dark)]">Serviço</label>
+    <select
+      id="servico"
+      formControlName="servicoId"
+      class="w-full px-4 py-3 rounded-[var(--radius-sm)]
+             bg-[var(--color-canvas-dark)] border border-[var(--color-hairline-dark)]
+             text-[var(--color-on-dark)] body-sm
+             focus:outline-none focus:border-[var(--color-primary)]"
+    >
+      <option value="" disabled>Selecione um serviço</option>
+      @for (servico of servicos(); track servico.id) {
+        <option [value]="servico.id">{{ servico.nome }}</option>
+      }
+    </select>
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label for="dataHora" class="caption-md text-[var(--color-body-dark)]">Data e Horário</label>
+    <input
+      id="dataHora"
+      type="datetime-local"
+      formControlName="dataHora"
+      class="w-full px-4 py-3 rounded-[var(--radius-sm)]
+             bg-[var(--color-canvas-dark)] border border-[var(--color-hairline-dark)]
+             text-[var(--color-on-dark)] body-sm
+             focus:outline-none focus:border-[var(--color-primary)]"
+    />
+  </div>
+
+  <div class="flex flex-col gap-1">
+    <label for="observacao" class="caption-md text-[var(--color-body-dark)]">
+      Observações <span class="text-[var(--color-mute-dark)]">(opcional)</span>
+    </label>
+    <textarea
+      id="observacao"
+      formControlName="observacao"
+      rows="3"
+      class="w-full px-4 py-3 rounded-[var(--radius-sm)]
+             bg-[var(--color-canvas-dark)] border border-[var(--color-hairline-dark)]
+             text-[var(--color-on-dark)] body-sm resize-none
+             focus:outline-none focus:border-[var(--color-primary)]"
+      placeholder="Alguma preferência ou informação adicional?"
+    ></textarea>
+  </div>
+
+  @if (error()) {
+    <p class="caption-md text-red-500">{{ error() }}</p>
+  }
+
+  <button
+    type="submit"
+    [disabled]="submitting() || form.invalid"
+    class="w-full py-3 rounded-[var(--radius-full)]
+           bg-[var(--color-primary)] text-[var(--color-on-dark)] btn-label-md
+           hover:bg-[var(--color-primary-pressed)] transition-colors
+           disabled:opacity-50 disabled:cursor-not-allowed"
+  >
+    {{ submitting() ? 'Agendando...' : 'Confirmar Agendamento' }}
+  </button>
+</form>

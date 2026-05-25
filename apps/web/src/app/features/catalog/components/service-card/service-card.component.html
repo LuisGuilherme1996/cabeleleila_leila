@@ -1,0 +1,26 @@
+<div
+  class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+         rounded-[var(--radius-md)] p-6 flex flex-col gap-3"
+>
+  <h3 class="heading-md text-[var(--color-on-dark)]">{{ servico().nome }}</h3>
+  @if (servico().descricao) {
+    <p class="body-sm text-[var(--color-body-dark)] flex-1">{{ servico().descricao }}</p>
+  }
+  <div
+    class="flex items-center justify-between mt-auto pt-4 border-t border-[var(--color-hairline-dark)]"
+  >
+    <span class="body-md text-[var(--color-primary)] font-semibold">
+      {{ servico().preco | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+    </span>
+    <span class="caption-sm text-[var(--color-mute-dark)]">{{ servico().duracaoFormatada }}</span>
+  </div>
+  <button
+    type="button"
+    (click)="onAgendar()"
+    class="w-full mt-1 py-3 rounded-[var(--radius-full)]
+           bg-[var(--color-primary)] text-[var(--color-on-dark)] btn-label-sm
+           hover:bg-[var(--color-primary-pressed)] transition-colors"
+  >
+    Agendar Agora
+  </button>
+</div>

@@ -1,0 +1,25 @@
+<div class="min-h-screen bg-[var(--color-canvas-dark)] py-12 px-6">
+  <div class="max-w-lg mx-auto">
+    <h1 class="heading-xl text-[var(--color-on-dark)] mb-8">Meu Perfil</h1>
+
+    @if (loading$ | async) {
+      <div class="flex items-center justify-center py-16">
+        <div class="w-8 h-8 border-2 border-[var(--color-primary)] border-t-transparent rounded-full animate-spin"></div>
+      </div>
+    } @else {
+      <div
+        class="rounded-[var(--radius-md)] p-8
+               backdrop-blur-xl border border-[var(--color-hairline-dark)]"
+        style="background: rgba(18,19,20,0.72);"
+      >
+        <app-perfil-form
+          [perfil]="perfil$ | async"
+          [saving]="saving$ | async"
+          [error]="error$ | async"
+          [success]="success$ | async"
+          (submitted)="onSave($event)"
+        />
+      </div>
+    }
+  </div>
+</div>

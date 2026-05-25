@@ -1,0 +1,60 @@
+<div
+  class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+         rounded-[var(--radius-md)] overflow-hidden"
+>
+  <div class="px-5 py-4 border-b border-[var(--color-hairline-dark)]">
+    <h2 class="heading-md text-[var(--color-on-dark)]">Próximos Atendimentos</h2>
+  </div>
+
+  @if (appointments().length === 0) {
+    <p class="body-md text-[var(--color-mute-dark)] px-5 py-8 text-center">
+      Nenhum atendimento agendado para hoje.
+    </p>
+  } @else {
+    <div class="overflow-x-auto">
+      <table class="w-full text-sm" aria-label="Próximos atendimentos do dia">
+        <thead>
+          <tr class="border-b border-[var(--color-hairline-dark)]">
+            <th
+              scope="col"
+              class="px-5 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider font-medium"
+            >Horário</th>
+            <th
+              scope="col"
+              class="px-5 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider font-medium"
+            >Cliente</th>
+            <th
+              scope="col"
+              class="px-5 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider font-medium"
+            >Serviço</th>
+            <th
+              scope="col"
+              class="px-5 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider font-medium"
+            >Valor</th>
+            <th
+              scope="col"
+              class="px-5 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider font-medium"
+            >Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          @for (a of appointments(); track a.id) {
+            <tr class="border-b border-[var(--color-hairline-dark)] last:border-0 hover:bg-[var(--color-surface-dark-card)] transition-colors">
+              <td class="px-5 py-3 text-[var(--color-on-dark)] font-medium">{{ a.dataHoraFormatada }}</td>
+              <td class="px-5 py-3 text-[var(--color-body-dark)]">{{ a.clienteNome }}</td>
+              <td class="px-5 py-3 text-[var(--color-body-dark)]">{{ a.servicoNome }}</td>
+              <td class="px-5 py-3 text-[var(--color-body-dark)]">
+                {{ a.servicoPreco | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+              </td>
+              <td class="px-5 py-3">
+                <span [class]="'inline-flex px-2 py-0.5 rounded-full caption-sm font-medium ' + statusClass(a.status)">
+                  {{ statusLabel(a.status) }}
+                </span>
+              </td>
+            </tr>
+          }
+        </tbody>
+      </table>
+    </div>
+  }
+</div>

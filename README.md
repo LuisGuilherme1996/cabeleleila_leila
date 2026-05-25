@@ -1,8 +1,8 @@
 # 💇‍♀️ Cabeleleila Leila — Sistema de Agendamento & Gestão
 
 > Sistema de Agendamentos Online e Gestão de Salão de Beleza de Alta Performance e Design Ultra Premium.
-> 
-> Projeto estruturado em monorepo utilizando **NestJS (Clean Architecture)** no backend, **Angular 21 (Signals & )** no frontend, persistência com **PostgreSQL + Prisma ORM** e cache/rate-limiting com **Redis**.
+>
+> Projeto estruturado em monorepo utilizando **Node.js + Express (Clean Architecture)** no backend, **Angular 21 (Signals)** no frontend, persistência com **PostgreSQL (SQL puro)** e cache/rate-limiting com **Redis**.
 
 ---
 
@@ -11,14 +11,17 @@
 A engenharia e o design de software deste projeto foram minuciosamente documentados para garantir a máxima qualidade de código, facilidade de manutenção e alinhamento de escopo. Acesse os documentos nos links abaixo:
 
 ### 📌 Requisitos & Planejamento
-* **[Documento de Requisitos (PRD)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/specs/PRD.md):** Visão de negócio, público-alvo, jornadas detalhadas, regras de negócio iniciais e critérios de aceitação gerais.
-* **[Plano de Execução Geral (.spec)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/specs/cabeleleila_leila.spec.md):** O cronograma oficial com todas as 62 tarefas mapeadas através de suas dependências e caminhos críticos.
+
+- **[Documento de Requisitos (PRD)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/specs/PRD.md):** Visão de negócio, público-alvo, jornadas detalhadas, regras de negócio iniciais e critérios de aceitação gerais.
+- **[Guia de Execução (HOW-TO-RUN)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/specs/HOW-TO-RUN.md):** Manual completo e detalhado para rodar a aplicação em ambientes Semi-Docker, Full Docker, Nativos, Testes e Produção.
+- **[Plano de Execução Geral (.spec)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/specs/cabeleleila_leila.spec.md):** O cronograma oficial com todas as 62 tarefas mapeadas através de suas dependências e caminhos críticos.
 
 ### 📐 Engenharia & Design de Software
-* **[Arquitetura de Sistemas](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/design/architecture.md):** Estrutura do Monorepo (Turborepo), fluxo de camadas da Clean Architecture, gestão de estado reativo (Signals AuthStore) e segurança com rotação de tokens JWT.
-* **[Modelagem de Banco de Dados](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/design/database.md):** Diagrama Entidade-Relacionamento, índices otimizados, tabelas e o arquivo `schema.prisma` completo pronto para execução.
-* **[Especificações de APIs (REST Contract)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/design/api.md):** Contrato técnico com payloads JSON de entrada/saída, rotas privadas, cookies seguros e tratamento de status HTTP.
-* **[Design System & UI/UX](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/design/ui_ux.md):** Tokens visuais de cores (Luxury Modernism), tipografia sofisticada (Playfair Display / Outfit), micro-animações dinâmicas e guia visual das principais telas.
+
+- **[Arquitetura de Sistemas](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/design/architecture.md):** Estrutura do Monorepo (Turborepo), fluxo de camadas da Clean Architecture, gestão de estado reativo (Signals AuthStore) e segurança com rotação de tokens JWT.
+- **[Modelagem de Banco de Dados](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/design/database.md):** Diagrama Entidade-Relacionamento, índices otimizados, tabelas e o DDL SQL completo pronto para execução.
+- **[Especificações de APIs (REST Contract)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/design/api.md):** Contrato técnico com payloads JSON de entrada/saída, rotas privadas, cookies seguros e tratamento de status HTTP.
+- **[Design System & UI/UX](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/design/ui_ux.md):** Tokens visuais de cores (Luxury Modernism), tipografia sofisticada (Playfair Display / Outfit), micro-animações dinâmicas e guia visual das principais telas.
 
 ---
 
@@ -26,8 +29,8 @@ A engenharia e o design de software deste projeto foram minuciosamente documenta
 
 O desenvolvimento foi subdividido em 9 fases incrementais de trabalho. Cada fase possui seu próprio checklist e guias de implementação técnica acionáveis:
 
-1. **[Fase A — Infraestrutura & Monorepo](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/tasks/fase_a_infraestrutura.md):** Scaffold dos apps NestJS/Angular, Docker e Lint compartilhado (8 tarefas).
-2. **[Fase B — Banco de Dados & ORM](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/tasks/fase_b_banco_dados.md):** Prisma, migrations e seeds (5 tarefas).
+1. **[Fase A — Infraestrutura & Monorepo](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/tasks/fase_a_infraestrutura.md):** Scaffold dos apps Express/Angular, Docker e Lint compartilhado (8 tarefas).
+2. **[Fase B — Banco de Dados & Migrations](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/tasks/fase_b_banco_dados.md):** Pool pg, migrations SQL e seeds (5 tarefas).
 3. **[Fase C — Módulo IAM (Backend)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/tasks/fase_c_iam_backend.md):** Autenticação JWT, Cookies HttpOnly, OAuth Google e RBAC (13 tarefas).
 4. **[Fase D — Módulo Catálogo (Backend)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/tasks/fase_d_catalogo_backend.md):** CRUD de serviços, horários e cálculo dinâmico de disponibilidade de slots (6 tarefas).
 5. **[Fase E — Módulo Agendamentos (Backend)](file:///home/luisguilherme/Documentos/projetos/desafio_dsin/docs/tasks/fase_e_agendamentos_backend.md):** Validação transacional de concorrência, máquina de estados de status e dashboard (7 tarefas).
@@ -38,12 +41,88 @@ O desenvolvimento foi subdividido em 9 fases incrementais de trabalho. Cada fase
 
 ---
 
-## 🛠️ Tecnologias Utilizadas
+## �️ Banco de Dados — Setup, Migrations e Seed
 
-* **Monorepo:** Turborepo v2
-* **Backend:** NestJS v11 (com TypeScript + Zod + Passport)
-* **Frontend:** Angular v21 (com Tailwind CSS v4 )
-* **Banco de Dados:** PostgreSQL 16 (orquestrado via Docker)
-* **Cache & Rate-limiting:** Redis v7
-* **Segurança:** Argon2 (hashing de senha) + JWT (Access Token & Refresh Token)
-* **Estilização:** CSS Variables + Tailwind + Playfair Display (Serif) + Outfit (Sans-Serif)
+### Pré-requisitos
+
+- Docker e Docker Compose instalados
+- Container PostgreSQL rodando (configurado em `docker-compose.yml`)
+- Arquivo `.env` na raiz do monorepo com a variável `DATABASE_URL` preenchida, por exemplo:
+  ```
+  DATABASE_URL=postgresql://postgres:postgres@localhost:5432/cabeleleila
+  ```
+
+---
+
+### 1. Subir o container do banco
+
+```bash
+docker compose up -d postgres
+```
+
+> Aguarde o container ficar saudável antes de prosseguir.
+
+---
+
+### 2. Aplicar as Migrations
+
+O runner executa todos os arquivos `.sql` em `apps/api/migrations/` em ordem lexicográfica e registra cada arquivo aplicado na tabela interna `_migrations`, garantindo idempotência.
+
+```bash
+# Na raiz do monorepo
+npm run migrate --workspace=apps/api
+
+# Ou dentro da pasta apps/api
+cd apps/api && npx tsx src/infrastructure/database/migrate.ts
+```
+
+As migrations criadas são executadas na seguinte ordem:
+
+| Arquivo | Conteúdo |
+|---|---|
+| `0001_iam_module.sql` | Tabelas de Identidade e Acesso (usuários, perfis, OAuth, tokens) |
+| `0002_catalog_module.sql` | Tabelas de Catálogo (serviços, horários, bloqueios) |
+| `0003_appointments_module.sql` | Tabela de Agendamentos |
+
+---
+
+### 3. Popular o banco com dados iniciais (Seed)
+
+O seed é **idempotente** — pode ser executado múltiplas vezes sem duplicar dados (`INSERT ... ON CONFLICT DO NOTHING`).
+
+```bash
+# Na raiz do monorepo
+npm run seed --workspace=apps/api
+
+# Ou dentro da pasta apps/api
+cd apps/api && npx tsx scripts/seed.ts
+```
+
+O script insere:
+
+- **Perfis:** `ADMIN` e `CLIENTE`
+- **Usuário administrador:** `leila@cabeleleila.com` (senha: `Admin@123`, hasheada com Argon2)
+- **Serviços padrão:** Corte Feminino, Corte Masculino, Coloração, Escova Progressiva
+- **Grade de funcionamento:** Segunda a Sábado, das 08:00 às 18:00
+
+---
+
+### Ordem completa de execução (primeira vez)
+
+```bash
+docker compose up -d postgres
+npm run migrate --workspace=apps/api
+npm run seed --workspace=apps/api
+```
+
+---
+
+## �🛠️ Tecnologias Utilizadas
+
+- **Monorepo:** Turborepo v2
+- **Backend:** Node.js + Express (com TypeScript + Zod + jsonwebtoken)
+- **Frontend:** Angular v21 (com Tailwind CSS v4 )
+- **Banco de Dados:** PostgreSQL 16 (orquestrado via Docker)
+- **Cache & Rate-limiting:** Redis v7
+- **Segurança:** Argon2 (hashing de senha) + JWT (Access Token & Refresh Token)
+- **Estilização:** CSS Variables + Tailwind + Playfair Display (Serif) + Outfit (Sans-Serif)

@@ -1,0 +1,59 @@
+@if (loading()) {
+  <div class="space-y-3">
+    @for (item of [1, 2, 3, 4, 5]; track item) {
+      <div class="h-12 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-md)] animate-pulse"></div>
+    }
+  </div>
+} @else {
+  <div class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+              rounded-[var(--radius-md)] overflow-hidden">
+    @if (!usuarios() || usuarios()!.length === 0) {
+      <p class="body-md text-[var(--color-mute-dark)] px-5 py-10 text-center">
+        Nenhum usuário encontrado.
+      </p>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm" aria-label="Tabela de usuários">
+          <thead>
+            <tr class="border-b border-[var(--color-hairline-dark)]">
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Nome</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Email</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Telefone</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Perfil</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Email</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (u of usuarios(); track u.id) {
+              <tr class="border-b border-[var(--color-hairline-dark)] last:border-0
+                         hover:bg-[var(--color-surface-dark-card)] transition-colors">
+                <td class="px-4 py-3 text-[var(--color-on-dark)] font-medium">{{ u.nome }}</td>
+                <td class="px-4 py-3 text-[var(--color-body-dark)]">{{ u.email }}</td>
+                <td class="px-4 py-3 text-[var(--color-body-dark)]">{{ u.telefone ?? '—' }}</td>
+                <td class="px-4 py-3">
+                  <span
+                    [class]="
+                      'inline-flex px-2 py-0.5 rounded-full caption-sm font-medium ' +
+                      (u.perfil === 'ADMIN'
+                        ? 'bg-amber-500/20 text-amber-400 border border-amber-500/30'
+                        : 'bg-sky-500/20 text-sky-400 border border-sky-500/30')
+                    "
+                  >
+                    {{ u.perfil }}
+                  </span>
+                </td>
+                <td class="px-4 py-3">
+                  @if (u.emailConfirmado) {
+                    <span class="caption-sm text-emerald-400">Confirmado</span>
+                  } @else {
+                    <span class="caption-sm text-amber-400">Pendente</span>
+                  }
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+}

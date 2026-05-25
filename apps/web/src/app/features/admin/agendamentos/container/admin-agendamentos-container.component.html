@@ -1,0 +1,72 @@
+<section class="py-[var(--space-section)] px-6">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="display-md text-[var(--color-on-dark)] mb-2">Gestão de Agendamentos</h1>
+    <p class="body-md text-[var(--color-body-dark)] mb-8">
+      Visualize, confirme, conclua ou cancele os agendamentos do salão.
+    </p>
+
+    <!-- Filters -->
+    <div class="flex flex-wrap gap-4 mb-6">
+      <div class="flex flex-col gap-1">
+        <label class="caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider" for="filtro-status">
+          Status
+        </label>
+        <select
+          id="filtro-status"
+          [ngModel]="filtroStatus$ | async"
+          (ngModelChange)="onFiltroStatusChange($event)"
+          class="px-4 py-2 bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+                 rounded-[var(--radius-md)] text-[var(--color-on-dark)] text-sm focus:outline-none
+                 focus:border-[var(--color-primary)] transition-colors"
+        >
+          @for (opt of statusOptions; track opt.value) {
+            <option [value]="opt.value">{{ opt.label }}</option>
+          }
+        </select>
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider" for="filtro-data-inicio">
+          Data início
+        </label>
+        <input
+          id="filtro-data-inicio"
+          type="date"
+          [ngModel]="filtroDataInicio$ | async"
+          (ngModelChange)="onFiltroDataInicioChange($event)"
+          class="px-4 py-2 bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+                 rounded-[var(--radius-md)] text-[var(--color-on-dark)] text-sm focus:outline-none
+                 focus:border-[var(--color-primary)] transition-colors"
+        />
+      </div>
+
+      <div class="flex flex-col gap-1">
+        <label class="caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider" for="filtro-data-fim">
+          Data fim
+        </label>
+        <input
+          id="filtro-data-fim"
+          type="date"
+          [ngModel]="filtroDataFim$ | async"
+          (ngModelChange)="onFiltroDataFimChange($event)"
+          class="px-4 py-2 bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+                 rounded-[var(--radius-md)] text-[var(--color-on-dark)] text-sm focus:outline-none
+                 focus:border-[var(--color-primary)] transition-colors"
+        />
+      </div>
+    </div>
+
+    @if (error$ | async; as err) {
+      <p class="body-md text-red-500 mb-4">{{ err }}</p>
+    }
+
+    <app-agendamentos-table
+      [agendamentos]="agendamentos$ | async"
+      [loading]="(loading$ | async) ?? false"
+      [actionLoading]="(actionLoading$ | async) ?? null"
+      (confirmar)="onConfirmar($event)"
+      (concluir)="onConcluir($event)"
+      (cancelar)="onCancelar($event)"
+    />
+  </div>
+</section>

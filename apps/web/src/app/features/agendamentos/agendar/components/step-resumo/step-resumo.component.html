@@ -1,0 +1,74 @@
+<div class="flex flex-col gap-6">
+  <!-- Summary card -->
+  <div class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+              rounded-[var(--radius-md)] p-6 flex flex-col gap-4">
+    <div class="flex flex-col gap-1">
+      <span class="caption-md text-[var(--color-mute-dark)]">Serviço</span>
+      <span class="body-md text-[var(--color-on-dark)]">{{ servico()?.nome }}</span>
+    </div>
+    <div class="flex items-center gap-6 pt-3 border-t border-[var(--color-hairline-dark)]">
+      <div class="flex flex-col gap-1">
+        <span class="caption-md text-[var(--color-mute-dark)]">Valor</span>
+        <span class="body-md text-[var(--color-primary)] font-semibold">
+          {{ servico()?.preco | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+        </span>
+      </div>
+      <div class="flex flex-col gap-1">
+        <span class="caption-md text-[var(--color-mute-dark)]">Duração</span>
+        <span class="body-md text-[var(--color-on-dark)]">{{ servico()?.duracaoFormatada }}</span>
+      </div>
+    </div>
+    <div class="flex flex-col gap-1 pt-3 border-t border-[var(--color-hairline-dark)]">
+      <span class="caption-md text-[var(--color-mute-dark)]">Data e Horário</span>
+      <span class="body-md text-[var(--color-on-dark)] capitalize">{{ formatarData(data()) }}, às {{ horario() }}</span>
+    </div>
+  </div>
+
+  <!-- Observações -->
+  <div class="flex flex-col gap-2">
+    <label for="obs" class="caption-md text-[var(--color-body-dark)]">
+      Observações do Atendimento <span class="text-[var(--color-mute-dark)]">(opcional)</span>
+    </label>
+    <textarea
+      id="obs"
+      [(ngModel)]="observacao"
+      rows="3"
+      placeholder="Alguma preferência ou informação adicional?"
+      class="w-full px-4 py-3 rounded-[var(--radius-sm)]
+             bg-[var(--color-canvas-dark)] border border-[var(--color-hairline-dark)]
+             text-[var(--color-on-dark)] body-sm resize-none
+             focus:outline-none focus:border-[var(--color-primary)]"
+    ></textarea>
+  </div>
+
+  @if (error()) {
+    <p class="caption-md text-red-400 bg-red-500/10 border border-red-500/20 rounded-[var(--radius-sm)] px-4 py-3">
+      {{ error() }}
+    </p>
+  }
+
+  <div class="flex flex-col sm:flex-row gap-3">
+    <button
+      type="button"
+      (click)="onConfirmar()"
+      [disabled]="submitting()"
+      class="flex-1 py-3 rounded-[var(--radius-full)]
+             bg-[var(--color-primary)] text-[var(--color-on-dark)] btn-label-md
+             hover:bg-[var(--color-primary-pressed)] transition-colors
+             disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      {{ submitting() ? 'Confirmando...' : 'Confirmar Agendamento' }}
+    </button>
+    <button
+      type="button"
+      (click)="voltarClicado.emit()"
+      [disabled]="submitting()"
+      class="px-6 py-3 rounded-[var(--radius-full)]
+             border border-[var(--color-hairline-dark)] text-[var(--color-body-dark)] btn-label-md
+             hover:border-[var(--color-primary)] hover:text-[var(--color-on-dark)] transition-colors
+             disabled:opacity-50 disabled:cursor-not-allowed"
+    >
+      Voltar
+    </button>
+  </div>
+</div>

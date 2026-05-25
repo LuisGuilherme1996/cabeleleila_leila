@@ -1,0 +1,83 @@
+@if (loading()) {
+  <div class="space-y-3">
+    @for (item of [1, 2, 3, 4, 5, 6, 7]; track item) {
+      <div class="h-16 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-md)] animate-pulse"></div>
+    }
+  </div>
+} @else {
+  <div class="space-y-3">
+    @for (row of rows; track row.diaSemana) {
+      <div class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+                  rounded-[var(--radius-md)] px-5 py-4 flex items-center gap-4 flex-wrap">
+        <!-- Day name -->
+        <span class="w-36 font-semibold text-[var(--color-on-dark)] shrink-0">{{ row.diaNome }}</span>
+
+        <!-- Fechado toggle -->
+        <label class="flex items-center gap-2 cursor-pointer select-none shrink-0">
+          <input
+            type="checkbox"
+            [(ngModel)]="row.fechadoEdit"
+            (ngModelChange)="markDirty(row)"
+            class="sr-only"
+            [id]="'fechado-' + row.diaSemana"
+          />
+          <div
+            class="relative w-10 h-5 rounded-full transition-colors"
+            [class]="row.fechadoEdit ? 'bg-red-500' : 'bg-emerald-500'"
+          >
+            <div
+              class="absolute top-0.5 left-0.5 w-4 h-4 bg-white rounded-full shadow transition-transform"
+              [class.translate-x-5]="!row.fechadoEdit"
+            ></div>
+          </div>
+          <span class="caption-sm text-[var(--color-body-dark)]">
+            {{ row.fechadoEdit ? 'Fechado' : 'Aberto' }}
+          </span>
+        </label>
+
+        <!-- Time fields -->
+        @if (!row.fechadoEdit) {
+          <div class="flex items-center gap-3 flex-1 flex-wrap">
+            <div class="flex items-center gap-2">
+              <label [for]="'inicio-' + row.diaSemana" class="caption-sm text-[var(--color-mute-dark)] whitespace-nowrap">
+                Abre às
+              </label>
+              <input
+                [id]="'inicio-' + row.diaSemana"
+                type="time"
+                [(ngModel)]="row.horaInicioEdit"
+                (ngModelChange)="markDirty(row)"
+                class="px-3 py-1.5 bg-[var(--color-surface-dark-card)] border border-[var(--color-hairline-dark)]
+                       rounded-lg text-[var(--color-on-dark)] text-sm outline-none
+                       focus:border-[var(--color-primary)]"
+              />
+            </div>
+            <div class="flex items-center gap-2">
+              <label [for]="'fim-' + row.diaSemana" class="caption-sm text-[var(--color-mute-dark)] whitespace-nowrap">
+                Fecha às
+              </label>
+              <input
+                [id]="'fim-' + row.diaSemana"
+                type="time"
+                [(ngModel)]="row.horaFimEdit"
+                (ngModelChange)="markDirty(row)"
+                class="px-3 py-1.5 bg-[var(--color-surface-dark-card)] border border-[var(--color-hairline-dark)]
+                       rounded-lg text-[var(--color-on-dark)] text-sm outline-none
+                       focus:border-[var(--color-primary)]"
+              />
+            </div>
+          </div>
+        } @else {
+          <span class="caption-sm text-[var(--color-mute-dark)] flex-1">Sem atendimento neste dia</span>
+        }
+
+        <!-- Save button -->
+        @if (row.dirty) {
+          <ui-button variant="primary" [disabled]="saving()" (click)="onSalvar(row)">
+            {{ saving() ? 'Salvando...' : 'Salvar' }}
+          </ui-button>
+        }
+      </div>
+    }
+  </div>
+}

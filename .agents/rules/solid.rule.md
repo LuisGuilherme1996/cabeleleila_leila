@@ -8,10 +8,12 @@ description: SOLID Principles - Aplique esta regra sempre que a tarefa envolver 
 Você está trabalhando em uma tarefa que envolve princípios de design orientado a objetos ou refatoração estrutural de classes.
 
 ### Ação Obrigatória:
+
 Antes de prosseguir, use a ferramenta `view_file` para carregar a skill de SOLID em:
 `/home/luisguilherme/Documentos/projetos/desafio_dsin/.agents/skills/SOLID..md`
 
 ### Diretrizes Chave:
+
 1. `SRP`: Garanta que cada classe/função possua um único motivo para mudar.
 2. `OCP`: Use polimorfismo ou gateways para permitir novas extensões sem modificar o código existente.
 3. `LSP`: As implementações devem respeitar rigorosamente os contratos das suas interfaces correspondentes.

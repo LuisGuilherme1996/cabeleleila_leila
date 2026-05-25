@@ -1,0 +1,46 @@
+<div class="flex flex-col gap-6">
+  @if (data()) {
+    <p class="body-sm text-[var(--color-body-dark)] capitalize">{{ formatarData(data()) }}</p>
+  }
+
+  @if (loading()) {
+    <div class="flex flex-wrap gap-3">
+      @for (i of [1, 2, 3, 4, 5, 6, 7, 8]; track i) {
+        <div class="h-10 w-20 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-full)] animate-pulse"></div>
+      }
+    </div>
+  } @else if (slots() && slots()!.length === 0) {
+    <p class="body-md text-[var(--color-mute-dark)]">Nenhum horário disponível para este dia.</p>
+  } @else {
+    <div class="flex flex-wrap gap-3">
+      @for (slot of slots(); track slot.horario) {
+        <button
+          type="button"
+          [disabled]="!slot.disponivel"
+          (click)="horarioSelecionado.emit(slot.horario)"
+          class="px-4 py-2 rounded-[var(--radius-full)] caption-md transition-colors border"
+          [class.bg-[var(--color-primary)]]="slot.disponivel"
+          [class.text-white]="slot.disponivel"
+          [class.border-[var(--color-primary)]]="slot.disponivel"
+          [class.hover:bg-[var(--color-primary-pressed)]]="slot.disponivel"
+          [class.bg-transparent]="!slot.disponivel"
+          [class.text-[var(--color-mute-dark)]]="!slot.disponivel"
+          [class.border-[var(--color-hairline-dark)]]="!slot.disponivel"
+          [class.line-through]="!slot.disponivel"
+          [class.cursor-not-allowed]="!slot.disponivel"
+          [class.opacity-40]="!slot.disponivel"
+        >
+          {{ slot.horario }}
+        </button>
+      }
+    </div>
+  }
+
+  <button
+    type="button"
+    (click)="voltarClicado.emit()"
+    class="self-start caption-md text-[var(--color-body-dark)] hover:text-[var(--color-on-dark)] transition-colors"
+  >
+    ← Voltar
+  </button>
+</div>

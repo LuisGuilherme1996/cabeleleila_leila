@@ -1,0 +1,37 @@
+<section class="py-[var(--space-section)] px-6">
+  <div class="max-w-7xl mx-auto">
+    <div class="flex items-center justify-between mb-8">
+      <div>
+        <h1 class="display-md text-[var(--color-on-dark)] mb-1">Gestão de Serviços</h1>
+        <p class="body-md text-[var(--color-body-dark)]">
+          Gerencie o catálogo de serviços do salão.
+        </p>
+      </div>
+      <ui-button variant="primary" (click)="onNovoServico()">
+        + Adicionar Novo Serviço
+      </ui-button>
+    </div>
+
+    @if (error$ | async; as err) {
+      <p class="body-md text-red-500 mb-4">{{ err }}</p>
+    }
+
+    <app-servicos-table
+      [servicos]="servicos$ | async"
+      [loading]="(loading$ | async) ?? false"
+      (editar)="onEditarServico($event)"
+      (toggleAtivo)="onToggleAtivo($event)"
+      (excluir)="onExcluirServico($event)"
+    />
+
+    @if (modalOpen$ | async) {
+      <app-servico-modal
+        [isOpen]="(modalOpen$ | async) ?? false"
+        [servico]="editingServico$ | async"
+        [saving]="(saving$ | async) ?? false"
+        (salvar)="onSalvar($event)"
+        (fechar)="onFecharModal()"
+      />
+    }
+  </div>
+</section>

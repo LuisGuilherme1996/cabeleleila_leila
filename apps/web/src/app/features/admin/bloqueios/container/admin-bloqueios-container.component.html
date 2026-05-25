@@ -1,0 +1,27 @@
+<section class="py-[var(--space-section)] px-6">
+  <div class="max-w-4xl mx-auto">
+    <div class="mb-8">
+      <h1 class="display-md text-[var(--color-on-dark)] mb-1">Bloqueios de Agenda</h1>
+      <p class="body-md text-[var(--color-body-dark)]">
+        Bloqueie períodos em que o salão não terá atendimentos.
+      </p>
+    </div>
+
+    @if (error$ | async; as err) {
+      <p class="body-md text-red-500 mb-4">{{ err }}</p>
+    }
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      <app-bloqueio-form
+        [saving]="(saving$ | async) ?? false"
+        (criar)="onCriar($event)"
+      />
+
+      <app-bloqueios-list
+        [bloqueios]="bloqueios$ | async"
+        [loading]="(loading$ | async) ?? false"
+        (remover)="onRemover($event)"
+      />
+    </div>
+  </div>
+</section>

@@ -1,0 +1,28 @@
+<section class="py-[var(--space-section)] px-6">
+  <div class="max-w-7xl mx-auto">
+    <h1 class="display-md text-[var(--color-on-dark)] mb-2">Dashboard Administrativo</h1>
+    <p class="body-md text-[var(--color-body-dark)] mb-10">
+      Visão geral dos atendimentos e métricas do salão.
+    </p>
+
+    @if (loading$ | async) {
+      <div class="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-3 gap-5 mb-5">
+        @for (item of [1, 2, 3, 4, 5]; track item) {
+          <div
+            class="h-28 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-md)] animate-pulse"
+          ></div>
+        }
+      </div>
+    }
+
+    @if (error$ | async; as err) {
+      <p class="body-md text-red-500 mb-6">{{ err }}</p>
+    }
+
+    <app-dashboard-stats [stats]="stats$ | async" />
+
+    @if (stats$ | async; as s) {
+      <app-upcoming-appointments [appointments]="s.proximosAgendamentos" />
+    }
+  </div>
+</section>

@@ -1,0 +1,32 @@
+@if (loading()) {
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    @for (i of [1, 2, 3, 4]; track i) {
+      <div class="h-28 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-md)] animate-pulse"></div>
+    }
+  </div>
+} @else {
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+    @for (servico of servicos(); track servico.id) {
+      <button
+        type="button"
+        (click)="servicoSelecionado.emit(servico)"
+        class="text-left bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+               rounded-[var(--radius-md)] p-5 flex flex-col gap-2
+               hover:border-[var(--color-primary)] transition-colors group"
+      >
+        <span class="heading-sm text-[var(--color-on-dark)] group-hover:text-[var(--color-primary)] transition-colors">
+          {{ servico.nome }}
+        </span>
+        @if (servico.descricao) {
+          <span class="caption-md text-[var(--color-body-dark)] line-clamp-2">{{ servico.descricao }}</span>
+        }
+        <div class="flex items-center justify-between mt-auto pt-3 border-t border-[var(--color-hairline-dark)]">
+          <span class="body-sm text-[var(--color-primary)] font-semibold">
+            {{ servico.preco | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+          </span>
+          <span class="caption-sm text-[var(--color-mute-dark)]">{{ servico.duracaoFormatada }}</span>
+        </div>
+      </button>
+    }
+  </div>
+}

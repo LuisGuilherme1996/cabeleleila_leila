@@ -1,0 +1,78 @@
+@if (loading()) {
+  <div class="space-y-3">
+    @for (item of [1, 2, 3]; track item) {
+      <div class="h-14 bg-[var(--color-surface-dark-elevated)] rounded-[var(--radius-md)] animate-pulse"></div>
+    }
+  </div>
+} @else {
+  <div
+    class="bg-[var(--color-surface-dark-elevated)] border border-[var(--color-hairline-dark)]
+           rounded-[var(--radius-md)] overflow-hidden"
+  >
+    @if (!servicos() || servicos()!.length === 0) {
+      <p class="body-md text-[var(--color-mute-dark)] px-5 py-10 text-center">
+        Nenhum serviço cadastrado.
+      </p>
+    } @else {
+      <div class="overflow-x-auto">
+        <table class="w-full text-sm" aria-label="Tabela de serviços">
+          <thead>
+            <tr class="border-b border-[var(--color-hairline-dark)]">
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Serviço</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Preço</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Duração</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Status</th>
+              <th scope="col" class="px-4 py-3 text-left caption-sm text-[var(--color-mute-dark)] uppercase tracking-wider">Ações</th>
+            </tr>
+          </thead>
+          <tbody>
+            @for (s of servicos(); track s.id) {
+              <tr class="border-b border-[var(--color-hairline-dark)] last:border-0 hover:bg-[var(--color-surface-dark-card)] transition-colors">
+                <td class="px-4 py-3">
+                  <p class="text-[var(--color-on-dark)] font-medium">{{ s.nome }}</p>
+                  @if (s.descricao) {
+                    <p class="caption-sm text-[var(--color-mute-dark)] line-clamp-1">{{ s.descricao }}</p>
+                  }
+                </td>
+                <td class="px-4 py-3 text-[var(--color-body-dark)] whitespace-nowrap">
+                  {{ s.preco | currency: 'BRL' : 'symbol' : '1.2-2' : 'pt-BR' }}
+                </td>
+                <td class="px-4 py-3 text-[var(--color-body-dark)] whitespace-nowrap">
+                  {{ s.duracaoMinutos }} min
+                </td>
+                <td class="px-4 py-3">
+                  <span
+                    [class]="
+                      'inline-flex px-2 py-0.5 rounded-full caption-sm font-medium ' +
+                      (s.ativo
+                        ? 'bg-emerald-500/20 text-emerald-400 border border-emerald-500/30'
+                        : 'bg-slate-500/20 text-slate-400 border border-slate-500/30')
+                    "
+                  >
+                    {{ s.ativo ? 'Ativo' : 'Inativo' }}
+                  </span>
+                </td>
+                <td class="px-4 py-3">
+                  <div class="flex items-center gap-2">
+                    <ui-button variant="secondary" (click)="editar.emit(s)">
+                      Editar
+                    </ui-button>
+                    <ui-button
+                      [variant]="s.ativo ? 'danger' : 'primary'"
+                      (click)="toggleAtivo.emit(s)"
+                    >
+                      {{ s.ativo ? 'Desativar' : 'Ativar' }}
+                    </ui-button>
+                    <ui-button variant="danger" (click)="excluir.emit(s)">
+                      Excluir
+                    </ui-button>
+                  </div>
+                </td>
+              </tr>
+            }
+          </tbody>
+        </table>
+      </div>
+    }
+  </div>
+}

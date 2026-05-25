@@ -59,11 +59,7 @@ export function parsePagination(query: Record<string, unknown>): PaginationParam
   return { page, limit, offset: (page - 1) * limit };
 }
 
-export function buildPaginatedResponse<T>(
-  items: T[],
-  total: number,
-  params: PaginationParams,
-) {
+export function buildPaginatedResponse<T>(items: T[], total: number, params: PaginationParams) {
   return {
     items,
     total,
@@ -99,7 +95,9 @@ export abstract class BaseRepository<T extends { id: string }> {
 
 // Uso — apenas lógica específica do repositório
 class PrismaUserRepository extends BaseRepository<User> implements IUserRepository {
-  protected get modelName() { return 'user'; }
+  protected get modelName() {
+    return 'user';
+  }
 
   protected mapToDomain(raw: PrismaUser): User {
     return User.restore(raw);
@@ -160,17 +158,16 @@ async function processOrder(orderId: string, userId: string, couponCode?: string
   if (!order) throw new Error('Not found');
   if (order.userId !== userId) throw new Error('Forbidden');
   if (order.status !== 'pending') throw new Error('Invalid status');
-  
+
   let discount = 0;
   if (couponCode) {
     const coupon = await couponRepo.findByCode(couponCode);
     if (!coupon || coupon.expiresAt < new Date()) throw new Error('Invalid coupon');
     if (coupon.minOrderValue > order.total) throw new Error('Order too small');
-    discount = coupon.discountType === 'percent'
-      ? order.total * (coupon.value / 100)
-      : coupon.value;
+    discount =
+      coupon.discountType === 'percent' ? order.total * (coupon.value / 100) : coupon.value;
   }
-  
+
   const finalTotal = order.total - discount;
   await paymentService.charge(userId, finalTotal);
   await orderRepo.updateStatus(orderId, 'processing');
@@ -255,7 +252,9 @@ function hasPremiumAccess(user: User): boolean {
   return isPaidPlan || isInTrial;
 }
 
-if (hasPremiumAccess(user)) { /* ... */ }
+if (hasPremiumAccess(user)) {
+  /* ... */
+}
 ```
 
 ---
@@ -263,11 +262,13 @@ if (hasPremiumAccess(user)) { /* ... */ }
 ## Checklist DRY/KISS
 
 **DRY:**
+
 - [ ] Existe lógica copiada de outro lugar?
 - [ ] Há mais de 1 lugar que precisa mudar se um requisito mudar?
 - [ ] Existem constantes mágicas repetidas?
 
 **KISS:**
+
 - [ ] A função tem mais de 20 linhas? (sinal de alerta)
 - [ ] Há mais de 2 níveis de aninhamento?
 - [ ] O nome da função/variável precisa de comentário para ser entendido?

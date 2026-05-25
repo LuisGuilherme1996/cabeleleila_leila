@@ -23,26 +23,34 @@ graph TD
 ## 1. As Camadas do Sistema
 
 ### 🛡️ Domínio (Domain) — O Core do Negócio
+
 A camada mais interna. Contém as regras de negócio essenciais e não deve ter nenhuma dependência externa (nenhum import de NestJS, Prisma, Express, etc.).
+
 - **Entidades (Entities)**: Objetos com identidade única que contêm lógica de negócio ativa.
 - **Objetos de Valor (Value Objects)**: Objetos sem identidade, definidos por seus atributos (ex: CPF, Email, Senha).
 - **Contratos (Interfaces)**: Definições abstratas de portas de saída (ex: `IUserRepository`).
 - **Erros de Domínio**: Exceções específicas do negócio (ex: `BusinessRuleException`).
 
 ### ⚙️ Aplicação (Application) — Casos de Uso
+
 Orquestra o fluxo de dados de e para as entidades de domínio.
+
 - **Casos de Uso (Use Cases)**: Representam uma única ação do sistema (ex: `CreateAppointmentUseCase`). Cada caso de uso implementa o padrão Command ou executa uma única tarefa do usuário.
 - **DTOs (Data Transfer Objects)**: Estruturas simples para transportar dados de entrada e saída.
 - **Mappers**: Convertem dados entre a camada de Domínio, DTOs e persistência.
 
 ### 💾 Infraestrutura (Infrastructure) — Detalhes Tecnológicos
+
 Implementações concretas de serviços e persistência.
+
 - **Repositórios Prisma**: Acesso real ao banco de dados implementando as interfaces de Domínio.
 - **Gateways & Providers**: Integração com serviços de terceiros (ex: SMS, Email, Stripe).
 - **Cache & Redis**: Implementações concretas de caching e controle de concorrência.
 
 ### 🌐 Apresentação (Presentation) — Entrada/Saída
+
 Ponto de entrada da aplicação.
+
 - **Controllers NestJS / Express**: Recebem requisições HTTP, delegam para os Use Cases e retornam a resposta.
 - **Validations (Zod/Joi)**: Validação rápida do formato de entrada antes de passar para a camada de aplicação.
 - **Guards & Middlewares**: Autenticação, Autorização (RBAC), Rate Limiting.
@@ -52,6 +60,7 @@ Ponto de entrada da aplicação.
 ## 2. Exemplo Prático: Agendamento de Serviço (Cabeleleila Leila)
 
 ### Domínio: Entidade e Contrato de Repositório
+
 ```typescript
 // src/modules/appointments/domain/entities/appointment.entity.ts
 export interface AppointmentProps {
@@ -91,11 +100,21 @@ export class Appointment {
   }
 
   // Getters
-  get id() { return this.props.id!; }
-  get clientId() { return this.props.clientId; }
-  get serviceId() { return this.props.serviceId; }
-  get scheduledAt() { return this.props.scheduledAt; }
-  get status() { return this.props.status; }
+  get id() {
+    return this.props.id!;
+  }
+  get clientId() {
+    return this.props.clientId;
+  }
+  get serviceId() {
+    return this.props.serviceId;
+  }
+  get scheduledAt() {
+    return this.props.scheduledAt;
+  }
+  get status() {
+    return this.props.status;
+  }
 }
 
 // src/modules/appointments/domain/repositories/appointment.repository.ts
@@ -107,6 +126,7 @@ export interface IAppointmentRepository {
 ```
 
 ### Aplicação: Caso de Uso e DTO
+
 ```typescript
 // src/modules/appointments/application/dtos/create-appointment.dto.ts
 export interface CreateAppointmentInput {
@@ -126,9 +146,7 @@ import { Appointment } from '../../domain/entities/appointment.entity';
 import { IAppointmentRepository } from '../../domain/repositories/appointment.repository';
 
 export class CreateAppointmentUseCase {
-  constructor(
-    private readonly appointmentRepository: IAppointmentRepository
-  ) {}
+  constructor(private readonly appointmentRepository: IAppointmentRepository) {}
 
   async execute(input: CreateAppointmentInput): Promise<CreateAppointmentOutput> {
     const scheduledAt = new Date(input.scheduledAt);
@@ -158,6 +176,7 @@ export class CreateAppointmentUseCase {
 ```
 
 ### Infraestrutura: Repositório Concreto com Prisma
+
 ```typescript
 // src/modules/appointments/infrastructure/repositories/prisma-appointment.repository.ts
 import { PrismaClient } from '@prisma/client';
@@ -193,7 +212,7 @@ export class PrismaAppointmentRepository implements IAppointmentRepository {
 
   async findConflicting(scheduledAt: Date): Promise<Appointment | null> {
     const raw = await this.prisma.appointment.findFirst({
-      where: { scheduledAt, status: 'CONFIRMED' }
+      where: { scheduledAt, status: 'CONFIRMED' },
     });
     if (!raw) return null;
     return Appointment.create(raw);

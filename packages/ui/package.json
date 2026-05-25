@@ -1,0 +1,21 @@
+{
+  "name": "ui",
+  "version": "1.0.0",
+  "private": true,
+  "exports": {
+    ".": {
+      "types": "./src/public-api.ts",
+      "default": "./src/public-api.ts"
+    }
+  },
+  "scripts": {
+    "lint": "eslint \"src/**/*.ts\""
+  },
+  "dependencies": {
+    "@angular/common": "^21.2.0",
+    "@angular/core": "^21.2.0"
+  },
+  "devDependencies": {
+    "typescript": "~5.9.2"
+  }
+}

@@ -1,0 +1,90 @@
+<section class="py-[var(--space-section)] px-6">
+  <div class="max-w-2xl mx-auto">
+
+    @if ((step$ | async) !== 'sucesso') {
+      <!-- Header -->
+      <h1 class="display-md text-[var(--color-on-dark)] mb-2">Novo Agendamento</h1>
+      <p class="body-md text-[var(--color-body-dark)] mb-8">
+        Siga os passos abaixo para reservar seu horário.
+      </p>
+
+      <!-- Step indicator -->
+      <div class="flex items-center gap-2 mb-10">
+        @for (s of [1, 2, 3, 4]; track s) {
+          <div
+            class="h-1 flex-1 rounded-full transition-colors"
+            [class.bg-[var(--color-primary)]]="stepNum(step$ | async) >= s"
+            [class.bg-[var(--color-hairline-dark)]]="stepNum(step$ | async) < s"
+          ></div>
+        }
+      </div>
+
+      <!-- Step labels -->
+      <div class="grid grid-cols-4 gap-2 mb-8 text-center">
+        @for (label of ['Serviço', 'Data', 'Horário', 'Confirmar']; track label; let i = $index) {
+          <span
+            class="caption-sm transition-colors"
+            [class.text-[var(--color-primary)]]="stepNum(step$ | async) === i + 1"
+            [class.text-[var(--color-on-dark)]]="stepNum(step$ | async) > i + 1"
+            [class.text-[var(--color-mute-dark)]]="stepNum(step$ | async) < i + 1"
+          >{{ label }}</span>
+        }
+      </div>
+    }
+
+    <!-- Step 1: Select Service -->
+    @if ((step$ | async) === 1) {
+      <app-step-servico
+        [servicos]="servicos$ | async"
+        [loading]="loading$ | async"
+        (servicoSelecionado)="onServicoSelecionado($event)"
+      />
+    }
+
+    <!-- Step 2: Select Date -->
+    @if ((step$ | async) === 2) {
+      <div class="mb-4">
+        <span class="caption-md text-[var(--color-mute-dark)]">Serviço selecionado: </span>
+        <span class="caption-md text-[var(--color-on-dark)]">{{ (servico$ | async)?.nome }}</span>
+      </div>
+      <app-step-data
+        (dataSelecionada)="onDataSelecionada($event)"
+        (voltarClicado)="onVoltar()"
+      />
+    }
+
+    <!-- Step 3: Select Time -->
+    @if ((step$ | async) === 3) {
+      <div class="mb-4">
+        <span class="caption-md text-[var(--color-mute-dark)]">Serviço: </span>
+        <span class="caption-md text-[var(--color-on-dark)]">{{ (servico$ | async)?.nome }}</span>
+      </div>
+      <app-step-horario
+        [slots]="slots$ | async"
+        [loading]="loadingSlots$ | async"
+        [data]="data$ | async"
+        (horarioSelecionado)="onHorarioSelecionado($event)"
+        (voltarClicado)="onVoltar()"
+      />
+    }
+
+    <!-- Step 4: Summary & Confirmation -->
+    @if ((step$ | async) === 4) {
+      <app-step-resumo
+        [servico]="servico$ | async"
+        [data]="data$ | async"
+        [horario]="horario$ | async"
+        [submitting]="submitting$ | async"
+        [error]="error$ | async"
+        (confirmado)="onConfirmar($event)"
+        (voltarClicado)="onVoltar()"
+      />
+    }
+
+    <!-- Success screen -->
+    @if ((step$ | async) === 'sucesso') {
+      <app-step-sucesso (novoAgendamento)="onIrMeusAgendamentos()" />
+    }
+
+  </div>
+</section>
