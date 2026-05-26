@@ -3,7 +3,12 @@
 -- Módulo Agendamentos — Tabela de Agendamentos
 -- =============================================================
 
-CREATE TYPE status_agendamento AS ENUM ('PENDENTE', 'CONFIRMADO', 'CONCLUIDO', 'CANCELADO');
+DO $$ 
+BEGIN 
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'status_agendamento') THEN 
+    CREATE TYPE status_agendamento AS ENUM ('PENDENTE', 'CONFIRMADO', 'CONCLUIDO', 'CANCELADO'); 
+  END IF; 
+END $$;
 
 -- -------------------------------------------------------------
 -- Tabela: agendamentos

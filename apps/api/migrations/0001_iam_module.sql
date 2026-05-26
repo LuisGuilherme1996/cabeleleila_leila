@@ -5,7 +5,12 @@
 
 CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
 
-CREATE TYPE tipo_token_acao AS ENUM ('CONFIRMACAO_EMAIL', 'RECUPERACAO_SENHA');
+DO $$ 
+BEGIN 
+  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'tipo_token_acao') THEN 
+    CREATE TYPE tipo_token_acao AS ENUM ('CONFIRMACAO_EMAIL', 'RECUPERACAO_SENHA'); 
+  END IF; 
+END $$;
 
 -- -------------------------------------------------------------
 -- Tabela: usuarios

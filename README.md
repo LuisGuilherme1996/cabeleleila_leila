@@ -54,10 +54,10 @@ O desenvolvimento foi subdividido em 9 fases incrementais de trabalho. Cada fase
 
 ---
 
-### 1. Subir o container do banco
+### 1. Subir o container up --build
 
 ```bash
-docker compose up -d postgres
+docker compose up -d --build
 ```
 
 > Aguarde o container ficar saudável antes de prosseguir.
@@ -110,7 +110,7 @@ O script insere:
 ### Ordem completa de execução (primeira vez)
 
 ```bash
-docker compose up -d postgres
+docker compose up -d --build
 npm run migrate --workspace=apps/api
 npm run seed --workspace=apps/api
 ```

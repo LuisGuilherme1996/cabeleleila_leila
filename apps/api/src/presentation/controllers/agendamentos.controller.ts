@@ -47,7 +47,6 @@ export class AgendamentosController {
       const isAdmin = req.user!.perfis.includes('ADMIN');
       const clienteId = isAdmin ? undefined : req.user!.sub;
       const data = await this.listarAgendamentosUseCase.execute(req.query as never, clienteId);
-      console.log('chegou aqui: ', data);
       res.status(200).json({ status: 'success', data });
     } catch (error) {
       next(error);

@@ -31,7 +31,6 @@ export class ResendEmailService implements IEmailPort {
     }
 
     try {
-      console.log(`[EmailService] Enviando e-mail para ${to} via Resend... ${this.fromEmail}`);
       const response = await this.resend.emails.send({
         from: this.fromEmail,
         to: [to],
@@ -42,7 +41,6 @@ export class ResendEmailService implements IEmailPort {
       if (response.error) {
         console.error('[EmailService] Erro ao enviar e-mail via Resend:', response.error);
       } else {
-        console.log(`[EmailService] E-mail enviado com sucesso para ${to}. ID:`, response.data?.id);
       }
     } catch (error) {
       console.error('[EmailService] Erro na requisição para Resend:', error);

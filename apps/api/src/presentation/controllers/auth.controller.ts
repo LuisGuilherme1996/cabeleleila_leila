@@ -155,7 +155,6 @@ export class AuthController {
 
   googleRedirect = (_req: Request, res: Response, next: NextFunction): void => {
     try {
-      console.log("chegou aqui")
       if (!env.GOOGLE_CLIENT_ID || !env.GOOGLE_REDIRECT_URI) {
         throw new OAuthProvedorError('OAuth2 com Google não está configurado neste servidor.');
       }
